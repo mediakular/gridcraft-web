@@ -8,6 +8,14 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	
+	interface HSStaticMethods {
+		autoInit: () => void;
+	}
+
+	interface Window {
+		HSStaticMethods: HSStaticMethods;
+	}
 }
 
 export {};
