@@ -28,6 +28,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"lucide-svelte": "^0.357.0",
 		"preline": "^2.0.3"
 	}
 }
