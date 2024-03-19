@@ -1,35 +1,22 @@
 <script lang="ts">
-	import { Grid, type GridColumn, type GridFilter } from "@mediakular/svelte-data-grid";
+	import { Grid, GridFooter, type GridColumn, type GridFilter, PlainTableTheme, PrelineTheme } from "@mediakular/gridcraft";
     import clientsJson from '$lib/data/samples/clients.json';
+
+	import HeroTable from "$lib/components/hero-grid/appearance/Table.svelte";
 
     import ClientCell from "$lib/components/hero-grid/cells/ClientCell.svelte";
     import DateCell from "$lib/components/hero-grid/cells/DateCell.svelte";
     import CurrencyCell from "$lib/components/hero-grid/cells/CurrencyCell.svelte";
     import StatusCell from "$lib/components/hero-grid/cells/StatusCell.svelte";
-    import EditActionsCell from "$lib/components/hero-grid/cells/EditActionsCell.svelte";
 
-    import HeroTable from "$lib/components/hero-grid/appearance/Table.svelte";
-    import TableHead from "$lib/components/hero-grid/appearance/TableHead.svelte";
-    import HeaderTh from "$lib/components/hero-grid/appearance/HeaderTh.svelte";
-    import TableBody from "$lib/components/hero-grid/appearance/TableBody.svelte";
-    import ThSortIndicator from "$lib/components/hero-grid/appearance/ThSortIndicator.svelte";
-    import ThCheckbox from "$lib/components/hero-grid/appearance/ThCheckbox.svelte";
-    import TrGroupByHeader from "$lib/components/hero-grid/appearance/groupby/TrGroupByHeader.svelte";
-    import TdGroupBy from "$lib/components/hero-grid/appearance/groupby/TdGroupBy.svelte";
-    import TdGroupByCheckbox from "$lib/components/hero-grid/appearance/groupby/TdGroupByCheckbox.svelte";
-    import GroupByDefaultTitle from "$lib/components/hero-grid/appearance/groupby/GroupByDefaultTitle.svelte";
-    import GroupByRowsCount from "$lib/components/hero-grid/appearance/groupby/GroupByRowsCount.svelte";
-    import TrRow from "$lib/components/hero-grid/appearance/row/TrRow.svelte";
-    import TdRow from "$lib/components/hero-grid/appearance/row/TdRow.svelte";
-    import TdCheckbox from "$lib/components/hero-grid/appearance/row/TdCheckbox.svelte";
-    import DefaultTitle from "$lib/components/hero-grid/appearance/row/DefaultTitle.svelte";
 	import ProgressCell from "./cells/ProgressCell.svelte";
-	import GridFooter from "./GridFooter.svelte";
 	import { SearchIcon } from "lucide-svelte";
 	import DarkModeButton from "../DarkModeButton.svelte";
     
-
     let clients = clientsJson as Client[];
+
+    let theme = PrelineTheme;
+    theme.grid.container = HeroTable;
 
     let itemsPerPage = 10;
     let currentPage = 1;
@@ -99,14 +86,22 @@
             key: 'progress', 
             title: 'Progress',
             renderComponent: ProgressCell,
-        },
+        }
         // {
         //     key: 'actions',
         //     title: '',
         //     sortable: false,
-        //     cellRender: (row: Client) => {
-        //         return { component: EditActionsCell, props: { value: row, editClicked: (value: Client) => { /* editItem = undefined; editItem = value; window.HSOverlay.open(editModalElement)*/ }} }
-        //     }
+        //     accessor: (row: Client) => { 
+        //         return {
+        //             value: row, 
+        //             editClicked: (value: Client) => {  
+        //                 editItem = undefined; 
+        //                 editItem = value; 
+        //                 window.HSOverlay.open(editModalElement) 
+        //             }
+        //         }
+        //     },
+        //     renderComponent: EditActionsCell
         // }
     ];
 
@@ -156,12 +151,10 @@
 </script>
 
 
-
 <div class="flex flex-col items-center rounded-t-full relative mt-[2rem]">
-
     <div class="after:bg-radient-ellipse-c after:from-blue-600 after:dark:from-blue-600 after:from-0% after:to-transparent after:to-70% after:z-[-1] after:absolute after:top-[-10rem] after:left-0 after:w-full after:h-full after:animate-pulse after:duration-[6000ms] opacity-80"></div>
-
     <div class="relative z-20 max-w-full lg:w-[65rem] p-4 drop-shadow-xl rounded-lg overflow-clip  ">
+        <div class="rounded-lg drop-shadow-lg">
         <Grid 
             data={clients} 
             {columns} 
@@ -173,25 +166,12 @@
             bind:groupBy
             bind:showCheckboxes
             bind:gridFilters
-            table={HeroTable}
-            thead={TableHead}
-            th={HeaderTh}
-            tbody={TableBody}
-            thCheckbox={ThCheckbox}
-            trGroupByHeader={TrGroupByHeader}
-            tdGroupBy={TdGroupBy}
-            tdGroupByCheckbox={TdGroupByCheckbox}
-            thSortIndicator={ThSortIndicator}
-            groupByDefaultTitle={GroupByDefaultTitle}
-            groupByRowsCount={GroupByRowsCount}
-            trRow={TrRow}
-            tdRow={TdRow}
-            tdCheckbox={TdCheckbox}
-            rowDefaultTitle={DefaultTitle} />
+            {theme} />
+        </div>
 
-            {#if totalResults == 0}
-                <div class="text-sm text-gray-800 dark:text-gray-700 p-4 bg-white drop-shadow-md dark:bg-slate-200 rounded-md mt-2">No rows selected</div>
-            {/if}
+        {#if totalResults == 0}
+            <div class="text-sm text-gray-800 dark:text-gray-700 p-4 bg-white drop-shadow-md dark:bg-slate-200 rounded-md mt-2">No rows selected</div>
+        {/if}
     </div>
 
     <div class="z-10 bg-gradient-to-tl from-blue-600 to-violet-600 w-full flex flex-col items-center mt-[-3rem] pt-[3rem]">
@@ -288,7 +268,7 @@
             
             <div class="my-3 rounded-lg bg-white/30 p-6 w-full max-w-3xl">
                 <div id="segment-1" class="hidden" role="tabpanel" aria-labelledby="segment-item-1">
-                    <GridFooter bind:currentPage bind:totalPages bind:totalResults bind:itemsPerPage />
+                    <GridFooter bind:currentPage bind:totalPages bind:totalResults bind:itemsPerPage {theme} />
                 </div>
                 <div id="segment-2" class="hidden" role="tabpanel" aria-labelledby="segment-item-2">
                     <div class="grid grid-rows-3 grid-flow-col gap-4">
@@ -427,13 +407,13 @@
                 </div>
             </div>
         </div>
+
     </div>
-
-
 </div>
 
 
-<!-- <div id="edit-client-modal" bind:this={editModalElement} class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+<!-- 
+<div id="edit-client-modal" bind:this={editModalElement} class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
     <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-14 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
     <div class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
         <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">

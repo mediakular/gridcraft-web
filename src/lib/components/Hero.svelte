@@ -9,19 +9,19 @@
     const packageManagers: PackageManager[] = [
         {
             title: 'npm',
-            install: 'npm i @mediakular/svelte-data-grid',
+            install: 'npm i @mediakular/gridcraft',
         },
         {
             title: 'yarn',
-            install: 'yarn add @mediakular/svelte-data-grid',
+            install: 'yarn add @mediakular/gridcraft',
         }, 
         {
             title: 'pnpm',
-            install: 'pnpm add @mediakular/svelte-data-grid',
+            install: 'pnpm add @mediakular/gridcraft',
         },
         {
             title: 'bun',
-            install: 'bun add @mediakular/svelte-data-grid',
+            install: 'bun add @mediakular/gridcraft',
         }
     ]
 
@@ -42,7 +42,7 @@
 	}
 </script>
 
-<div class="relative overflow-hidden before:absolute before:top-0 before:start-1/2 before:bg-[url('https://preline.co/assets/svg/examples/polygon-bg-element.svg')] before:bg-no-repeat before:bg-top before:bg-cover before:size-full before:-z-[1] before:transform before:-translate-x-1/2 dark:before:bg-[url('https://preline.co/assets/svg/examples-dark/polygon-bg-element.svg')]">
+<div class="relative z-50 overflow-hidden before:absolute before:top-0 before:start-1/2 before:bg-[url('/bg.svg')] before:bg-no-repeat before:bg-top before:bg-cover before:size-full before:-z-[1] before:transform before:-translate-x-1/2 dark:before:bg-[url('/bg.svg')] dark:before:opacity-[3%]">
     <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
       <!-- Announcement Banner 
       <div class="flex justify-center">

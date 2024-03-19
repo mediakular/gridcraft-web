@@ -52,6 +52,7 @@ export default {
   content: [
     './src/**/*.{html,js,svelte,ts}',
     './node_modules/preline/preline.js',
+    './node_modules/@mediakular/gridcraft/dist/themes/**/*.{js,svelte}'
   ],
   theme: {
     extend: {},
