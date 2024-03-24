@@ -1,8 +1,7 @@
 <script lang="ts">
-	import DarkModeButton from "$lib/components/DarkModeButton.svelte";
     import type { DocuCategory } from "$lib/types";
-	import { page } from '$app/stores';
-	import Header from "../Header.svelte";
+    import { page } from '$app/stores';
+    import { base } from '$app/paths';
 
     export let category = "";
     export let title = "";
@@ -47,23 +46,23 @@
     <div id="application-sidebar" class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-[69px] start-0 bottom-0 z-[60] w-64 bg-white border-e border-gray-200 pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-slate-700 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 dark:bg-gray-800 dark:border-gray-700">
         <nav class="hs-accordion-group p-6 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
             {#each categories as cat}
-				<span class="block pt-4 pb-2 px-2 text-xs font-medium uppercase text-gray-400 dark:text-gray-600">
-					{cat.title}
-				</span>
+              <span class="block pt-4 pb-2 px-2 text-xs font-medium uppercase text-gray-400 dark:text-gray-600">
+                {cat.title}
+              </span>
 
-				<ul class="space-y-1.5">
-					{#each cat.pages as page}
-						<li>
-							<a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900/60 dark:text-white"
-							class:bg-gray-100={currentPath === "/docs/" + page.slug || (page.slug == "introduction" && currentPath == "/docs")}
-							class:dark:bg-gray-900={currentPath === "/docs/" + page.slug || (page.slug == "introduction" && currentPath == "/docs")}
-							href="/docs/{page.slug}">
-								{page.title}
-							</a>
-						</li>
-					{/each}
-				</ul>
-			{/each}
+              <ul class="space-y-1.5">
+                {#each cat.pages as page}
+                  <li>
+                    <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900/60 dark:text-white"
+                    class:bg-gray-100={currentPath === "/docs/" + page.slug || (page.slug == "introduction" && currentPath == "/docs")}
+                    class:dark:bg-gray-900={currentPath === "/docs/" + page.slug || (page.slug == "introduction" && currentPath == "/docs")}
+                    href="{base}/docs/{page.slug}">
+                      {page.title}
+                    </a>
+                  </li>
+                {/each}
+              </ul>
+          {/each}
         </nav>
     </div>
     <!-- End Sidebar -->

@@ -1,13 +1,13 @@
 <script>
 	import DarkModeButton from "./DarkModeButton.svelte";
-
+  import { base } from '$app/paths';
   export let isDocs = false;
 </script>
 
 <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full backdrop-blur-sm bg-white/80 border-b border-gray-200 text-sm py-3 sm:py-0 dark:bg-slate-900/80 dark:border-slate-700 fixed top-0 z-[999]">
   <nav class="relative {!isDocs ? 'max-w-[85rem]' : ''} w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8" aria-label="Global">
     <div class="flex items-center justify-between">
-      <a class="flex items-center gap-2 text-xl font-semibold dark:text-white cursor-pointer" href="/" aria-label="Brand">
+      <a class="flex items-center gap-2 text-xl font-semibold dark:text-white cursor-pointer" href="{base}/" aria-label="Brand">
         <svg  width="100%" height="100%" viewBox="0 0 3334 3334" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="h-8 w-8">
           <rect id="GC-Logo" x="0" y="0" width="3333.33" height="3333.33" style="fill:none;" />
           <g id="GC-Logo1" class="dark:fill-white">
@@ -26,7 +26,7 @@
     <div id="navbar-collapse-with-animation" class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block ml-7">
       <div class="flex flex-col gap-y-4 gap-x-0 mt-5 sm:flex-row sm:items-center sm:gap-y-0 sm:gap-x-7 sm:mt-0 sm:ps-7">
         <!-- <a class="font-medium text-gray-500 hover:text-gray-400 sm:py-6 dark:text-gray-400 dark:hover:text-gray-500" href="/demos">Demos</a> -->
-        <a class="font-medium text-gray-500 hover:text-gray-400 sm:py-6 dark:text-gray-400 dark:hover:text-gray-500" href="/docs">Documentation</a>
+        <a class="font-medium text-gray-500 hover:text-gray-400 sm:py-6 dark:text-gray-400 dark:hover:text-gray-500" href="{base}/docs">Documentation</a>
 
         <!-- <div class="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none] sm:[--trigger:hover] sm:py-4">
           <button type="button" class="flex items-center w-full text-gray-500 hover:text-gray-400 font-medium dark:text-gray-400 dark:hover:text-gray-500 ">

@@ -1,8 +1,12 @@
+<script lang="ts">
+    import { base } from '$app/paths';
+</script>
+
 <footer class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
     <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-5 text-center">
         <div class="flex items-center justify-center md:justify-start">
-            <a class="flex items-center gap-2 text-xl font-semibold text-black dark:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/" aria-label="Brand">
+            <a class="flex items-center gap-2 text-xl font-semibold text-black dark:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="{base}/" aria-label="Brand">
                 <svg width="100%" height="100%" viewBox="0 0 3334 3334" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="h-8 w-8">
                     <rect id="GC-Logo" x="0" y="0" width="3333.33" height="3333.33" style="fill:none;" />
                     <g id="GC-Logo1" class="dark:fill-white">
@@ -17,7 +21,7 @@
     
         <ul class="text-center">
             <li class="inline-block relative pe-8 last:pe-0 last-of-type:before:hidden before:absolute before:top-1/2 before:end-3 before:-translate-y-1/2 before:content-['/'] before:text-gray-300 dark:before:text-gray-600">
-                <a class="inline-flex gap-x-2 text-sm text-gray-500 hover:text-gray-800 dark:text-gray-500 dark:hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/docs">
+                <a class="inline-flex gap-x-2 text-sm text-gray-500 hover:text-gray-800 dark:text-gray-500 dark:hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="{base}/docs">
                     Documentation
                 </a>
             </li>
