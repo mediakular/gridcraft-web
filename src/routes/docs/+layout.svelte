@@ -4,7 +4,6 @@
     import ClipboardJS from 'clipboard';
     import Header from "$lib/components/Header.svelte";
 
-
     function updateTOC() {
         if (browser) {
             var fragment = document.createDocumentFragment();

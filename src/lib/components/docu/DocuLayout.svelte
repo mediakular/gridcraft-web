@@ -56,7 +56,7 @@
                     <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-slate-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-900/60 dark:text-white"
                     class:bg-gray-100={currentPath === "/docs/" + page.slug || (page.slug == "introduction" && currentPath == "/docs")}
                     class:dark:bg-gray-900={currentPath === "/docs/" + page.slug || (page.slug == "introduction" && currentPath == "/docs")}
-                    href="{base}/docs/{page.slug}">
+                    href="/docs/{page.slug}">
                       {page.title}
                     </a>
                   </li>
