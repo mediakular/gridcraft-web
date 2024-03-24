@@ -1,3 +1,82 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.prose .doc-step h3 {
+    @apply mt-0
+}
+
+.prose .code-only pre {
+    @apply my-4
+}
+
+
+.prose .hint.tip {
+    @apply bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4
+}
+
+.prose .hint.warn {
+    @apply bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4
+}
+
+.prose .hint.error {
+    @apply bg-red-100 border-l-4 border-red-500 text-red-700 p-4
+}
+
+.prose details summary {
+    @apply cursor-pointer
+}
+
+.prose pre.code-with-title {
+    @apply pt-10
+}
+
+.prose pre div[data-remark-code-title] {
+    @apply absolute top-4 left-3 text-xs
+}
+
+.prose pre.shiki {
+    @apply relative pl-7
+}
+
+.prose pre .copy-code-button {
+    @apply absolute top-4 right-3 text-xs
+}
+
+.prose pre {
+    @apply max-w-[75ch]
+}
+
+.prose a span.icon.icon-link {
+    @apply after:content-["#"] after:mr-2 
+}
+
+.prose h2 a,
+.prose h3 a,
+.prose h4 a  {
+    @apply no-underline before:content-["#"] before:table before:h-[130px] before:mt-[-130px] md:before:h-[140px] md:before:mt-[-140px] lg:before:h-[100px] lg:before:mt-[-100px] before:invisible
+}
+
+#toc a.toc-link {
+    @apply no-underline border-l-4 border-transparent ps-4 transition-all block dark:text-gray-200
+}
+
+#toc a.toc-link.active {
+    @apply text-blue-600 border-l-4 border-blue-500 ps-4 block dark:text-blue-400 dark:border-blue-400
+}
+
+#toc {
+    @apply px-10 md:px-0
+}
+
+#toc ol {
+    @apply md:pl-0
+}
+
+#toc ol li {
+    @apply list-decimal md:list-none
+}
+
+#toc ol ol li {
+    @apply pl-8
+}

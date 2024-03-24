@@ -12,6 +12,7 @@
 	import ProgressCell from "./cells/ProgressCell.svelte";
 	import { SearchIcon } from "lucide-svelte";
 	import DarkModeButton from "../DarkModeButton.svelte";
+	import Features from "../Features.svelte";
     
     let clients = clientsJson as Client[];
 
@@ -106,8 +107,8 @@
     ];
 
     let textSearch = "";    
-    let gridFilters: GridFilter[];
-    $: gridFilters = [
+    let filters: GridFilter[];
+    $: filters = [
         {   
             key: "text-search", 
             columns: ["name", "total", "age"], 
@@ -127,7 +128,8 @@
         { key: "status-active", columns: "status", filter: (val: any) => { return val != "active" }, active: false },
         { key: "status-inactive", columns: "status", filter: (val: any) => { return val != "inactive" }, active: false },
         { key: "status-pending", columns: "status", filter: (val: any) => { return val != "pending" }, active: false },
-        {   key: "progress", 
+        {   
+            key: "progress", 
             columns: "progress", 
             filter: (val: any) => { 
                 if ("lte" === progressOperator) {
@@ -142,9 +144,9 @@
         },
     ];
 
-    $: activeFilterActive = !gridFilters[1].active;
-    $: inactiveFilterActive = !gridFilters[2].active;
-    $: pendingFilterActive = !gridFilters[3].active;
+    $: activeFilterActive = !filters[1].active;
+    $: inactiveFilterActive = !filters[2].active;
+    $: pendingFilterActive = !filters[3].active;
 
     let progressFilter = 10;
     let progressOperator = "lte";
@@ -165,7 +167,7 @@
             bind:selectedRows
             bind:groupBy
             bind:showCheckboxes
-            bind:gridFilters
+            bind:filters
             {theme} />
         </div>
 
@@ -186,7 +188,7 @@
         {/if}
 
         <div>
-            {#if gridFilters[0].active}
+            {#if filters[0].active}
                 <span class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-slate-800/50 dark:text-gray-300">
                     Search: {textSearch}
                     <button type="button" class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 dark:hover:bg-blue-900" on:click={() => textSearch = ""}>
@@ -195,34 +197,34 @@
                     </button>
                 </span>
             {/if}
-            {#if gridFilters[1].active}
+            {#if filters[1].active}
                 <span class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-slate-800/50 dark:text-gray-300">
                     Status != Active
-                    <button type="button" class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 dark:hover:bg-blue-900" on:click={() => gridFilters[1].active = false}>
+                    <button type="button" class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 dark:hover:bg-blue-900" on:click={() => filters[1].active = false}>
                         <span class="sr-only">Remove badge</span>
                         <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                     </button>
                 </span>
             {/if}
-            {#if gridFilters[2].active}
+            {#if filters[2].active}
                 <span class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-slate-800/50 dark:text-gray-300">
                     Status != Inactive
-                    <button type="button" class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 dark:hover:bg-blue-900" on:click={() => gridFilters[2].active = false}>
+                    <button type="button" class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 dark:hover:bg-blue-900" on:click={() => filters[2].active = false}>
                         <span class="sr-only">Remove badge</span>
                         <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                     </button>
                 </span>
             {/if}
-            {#if gridFilters[3].active}
+            {#if filters[3].active}
                 <span class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-slate-800/50 dark:text-gray-300">
                     Status != Pending
-                    <button type="button" class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 dark:hover:bg-blue-900" on:click={() => gridFilters[3].active = false}>
+                    <button type="button" class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 dark:hover:bg-blue-900" on:click={() => filters[3].active = false}>
                         <span class="sr-only">Remove badge</span>
                         <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                     </button>
                 </span>
             {/if}
-            {#if gridFilters[4].active}
+            {#if filters[4].active}
                 <span class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-slate-800/50 dark:text-gray-300">
                     Progress {progressOperator == "lte" ? "<=" : ""} {progressOperator == "gte" ? ">=" : ""} {progressOperator == "equ" ? "=" : ""} {progressFilter}
                     <button type="button" class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 dark:hover:bg-blue-900" on:click={() => {progressFilter = 10; progressOperator = "lte"}}>
@@ -247,7 +249,7 @@
             <div class="flex justify-center">
                 <div class="flex bg-gray-100/10 hover:bg-gray-100/40 rounded-lg transition p-1 dark:bg-gray-700 dark:hover:bg-gray-600">
                     <nav class="flex space-x-2" aria-label="Tabs" role="tablist">
-                        <button type="button" class="hs-tab-active:bg-white/80 hs-tab-active:text-gray-800 hs-tab-active:dark:bg-gray-800 hs-tab-active:dark:text-gray-400 dark:hs-tab-active:bg-gray-800 py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-200 hover:text-gray-700 font-medium rounded-lg hover:hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:text-white transition-all " id="segment-item-1" data-hs-tab="#segment-1" aria-controls="segment-1" role="tab">
+                        <button type="button" class="hs-tab-active:bg-white/80 hs-tab-active:text-gray-800 hs-tab-active:dark:bg-gray-800 hs-tab-active:dark:text-gray-400 dark:hs-tab-active:bg-gray-800 py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-200 hover:text-gray-700 font-medium rounded-lg hover:hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:text-white transition-all active" id="segment-item-1" data-hs-tab="#segment-1" aria-controls="segment-1" role="tab">
                             Paging
                         </button>
                         <button type="button" class="hs-tab-active:bg-white/80 hs-tab-active:text-gray-800 hs-tab-active:dark:bg-gray-800 hs-tab-active:dark:text-gray-400 dark:hs-tab-active:bg-gray-800 py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-200 hover:text-gray-700 font-medium rounded-lg hover:hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:text-white transition-all" id="segment-item-2" data-hs-tab="#segment-2" aria-controls="segment-2" role="tab">
@@ -259,7 +261,7 @@
                         <button type="button" class="hs-tab-active:bg-white/80 hs-tab-active:text-gray-800 hs-tab-active:dark:bg-gray-800 hs-tab-active:dark:text-gray-400 dark:hs-tab-active:bg-gray-800 py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-200 hover:text-gray-700 font-medium rounded-lg hover:hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:text-white transition-all" id="segment-item-4" data-hs-tab="#segment-4" aria-controls="segment-4" role="tab">
                             Columns
                         </button>
-                        <button type="button" class="hs-tab-active:bg-white/80 hs-tab-active:text-gray-800 hs-tab-active:dark:bg-gray-800 hs-tab-active:dark:text-gray-400 dark:hs-tab-active:bg-gray-800 py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-200 hover:text-gray-700 font-medium rounded-lg hover:hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:text-white transition-all active" id="segment-item-5" data-hs-tab="#segment-5" aria-controls="segment-5" role="tab">
+                        <button type="button" class="hs-tab-active:bg-white/80 hs-tab-active:text-gray-800 hs-tab-active:dark:bg-gray-800 hs-tab-active:dark:text-gray-400 dark:hs-tab-active:bg-gray-800 py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-200 hover:text-gray-700 font-medium rounded-lg hover:hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:text-white transition-all" id="segment-item-5" data-hs-tab="#segment-5" aria-controls="segment-5" role="tab">
                             Appearance
                         </button>
                     </nav>
@@ -267,7 +269,7 @@
             </div>
             
             <div class="my-3 rounded-lg bg-white/30 p-6 w-full max-w-3xl">
-                <div id="segment-1" class="hidden" role="tabpanel" aria-labelledby="segment-item-1">
+                <div id="segment-1" class="" role="tabpanel" aria-labelledby="segment-item-1">
                     <GridFooter bind:currentPage bind:totalPages bind:totalResults bind:itemsPerPage {theme} />
                 </div>
                 <div id="segment-2" class="hidden" role="tabpanel" aria-labelledby="segment-item-2">
@@ -341,7 +343,7 @@
                         <div class="row-span-3">
                             <div class="flex flex-col bg-white/50 dark:bg-slate-900 rounded-md p-4">
                                 <label for="hs-as-columns-dropdown-all-active" class="flex py-2.5 px-3 capitalize">
-                                    <input type="checkbox" bind:checked={activeFilterActive} on:click={() => gridFilters[1].active = !gridFilters[1].active} class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 disabled:opacity-40" id="hs-as-columns-dropdown-all-active">
+                                    <input type="checkbox" bind:checked={activeFilterActive} on:click={() => filters[1].active = !filters[1].active} class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 disabled:opacity-40" id="hs-as-columns-dropdown-all-active">
                                     <span class="ml-2 py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
                                         <svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
@@ -350,7 +352,7 @@
                                     </span>
                                 </label>
                                 <label for="hs-as-columns-dropdown-all-inactive" class="flex py-2.5 px-3 capitalize">
-                                    <input type="checkbox" bind:checked={inactiveFilterActive} on:click={() => gridFilters[2].active = !gridFilters[2].active} class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 disabled:opacity-40" id="hs-as-columns-dropdown-all-inactive">
+                                    <input type="checkbox" bind:checked={inactiveFilterActive} on:click={() => filters[2].active = !filters[2].active} class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 disabled:opacity-40" id="hs-as-columns-dropdown-all-inactive">
                                     <span class="ml-2 py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-red-100 text-red-800 rounded-full dark:bg-red-500/10 dark:text-red-500">
                                         <svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
@@ -359,7 +361,7 @@
                                     </span>
                                 </label>
                                 <label for="hs-as-columns-dropdown-all-pending" class="flex py-2.5 px-3 capitalize">
-                                    <input type="checkbox" bind:checked={pendingFilterActive} on:click={() => gridFilters[3].active = !gridFilters[3].active} class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 disabled:opacity-40" id="hs-as-columns-dropdown-all-pending">
+                                    <input type="checkbox" bind:checked={pendingFilterActive} on:click={() => filters[3].active = !filters[3].active} class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 disabled:opacity-40" id="hs-as-columns-dropdown-all-pending">
                                     <span class="ml-2 py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full dark:bg-yellow-500/10 dark:text-yellow-500">
                                         <svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
@@ -399,7 +401,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="segment-5" class="" role="tabpanel" aria-labelledby="segment-item-5">
+                <div id="segment-5" class="hidden" role="tabpanel" aria-labelledby="segment-item-5">
                     <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4 flex items-center">
                         <div class="bg-gray-100 dark:bg-slate-700 rounded-md p-2"><DarkModeButton /></div>
                         <span class="text-sm text-gray-800 ms-3 dark:text-gray-400"> Switch between light and dark mode</span>
@@ -407,6 +409,8 @@
                 </div>
             </div>
         </div>
+
+        <Features />
 
     </div>
 </div>
