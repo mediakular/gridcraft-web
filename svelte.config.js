@@ -44,7 +44,7 @@ const config = {
 			fallback: '404.html',
 			precompress: true,
 			strict: true,
-			trailingSlash: 'always'
+			trailingSlash: 'ignore'
 		})
 	}
 };
