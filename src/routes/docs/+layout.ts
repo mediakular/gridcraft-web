@@ -13,6 +13,7 @@ export const load: LayoutLoad = async ({fetch }: LayoutLoadEvent) => {
 	return {
 		categories: docuCategories,
 		content: post.default,
-		meta: post.metadata
+		meta: post.metadata,
+		slug: 'introduction'
 	};
 };
