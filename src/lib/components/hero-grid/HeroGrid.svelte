@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Grid, GridFooter, type GridColumn, type GridFilter, PlainTableTheme, PrelineTheme } from "@mediakular/gridcraft";
+	import { Grid, GridFooter, type GridColumn, type GridFilter, PlainTableCssTheme, PrelineTheme } from "@mediakular/gridcraft";
     import clientsJson from '$lib/data/samples/clients.json';
 
 	import HeroTable from "$lib/components/hero-grid/appearance/Table.svelte";
@@ -402,9 +402,16 @@
                     </div>
                 </div>
                 <div id="segment-5" class="hidden" role="tabpanel" aria-labelledby="segment-item-5">
-                    <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4 flex items-center">
-                        <div class="bg-gray-100 dark:bg-slate-700 rounded-md p-2"><DarkModeButton /></div>
-                        <span class="text-sm text-gray-800 ms-3 dark:text-gray-400"> Switch between light and dark mode</span>
+                    <div class="grid grid-rows-1 grid-cols-2 grid-flow-col gap-4">
+                        <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4 flex items-center">
+                            <div class="bg-gray-100 dark:bg-slate-700 rounded-md p-2"><DarkModeButton /></div>
+                            <span class="text-sm text-gray-800 ms-3 dark:text-gray-400"> Switch between light and dark mode</span>
+                        </div>
+
+                        <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4 flex items-center gap-4">
+                            <button class="inline-flex justify-center {theme === PlainTableCssTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => theme = PlainTableCssTheme}>Plain Css Theme</button>
+                            <button class="inline-flex justify-center {theme === PrelineTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => theme = PrelineTheme}>Preline Theme</button>
+                        </div>
                     </div>
                 </div>
             </div>

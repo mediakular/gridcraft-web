@@ -19,9 +19,9 @@ const mdsvexOptions = {
 			const theme = "dark-plus";
 			const highlighter = await getHighlighter({
 				themes: [theme],
-				langs: ['javascript', 'typescript', 'svelte', 'bash']
+				langs: ['javascript', 'typescript', 'svelte', 'bash', 'css']
 			})
-			await highlighter.loadLanguage('javascript', 'typescript', 'svelte', 'bash')
+			await highlighter.loadLanguage('javascript', 'typescript', 'svelte', 'bash', 'css')
 			const html = escapeSvelte(highlighter.codeToHtml(code, { lang, theme }))
 			return `{@html \`${html}\` }`
 		}
