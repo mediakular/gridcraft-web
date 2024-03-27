@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Grid, GridFooter, type GridColumn, type GridFilter, PlainTableCssTheme, PrelineTheme } from "@mediakular/gridcraft";
+	import { Grid, GridFooter, type GridColumn, type GridFilter, PlainTableCssTheme, PrelineTheme, CardsPlusTheme } from "@mediakular/gridcraft";
     import clientsJson from '$lib/data/samples/clients.json';
 
 	import HeroTable from "$lib/components/hero-grid/appearance/Table.svelte";
@@ -8,12 +8,21 @@
     import DateCell from "$lib/components/hero-grid/cells/DateCell.svelte";
     import CurrencyCell from "$lib/components/hero-grid/cells/CurrencyCell.svelte";
     import StatusCell from "$lib/components/hero-grid/cells/StatusCell.svelte";
+	import ProgressCell from "$lib/components/hero-grid/cells/ProgressCell.svelte";
+    import EditActionsCell from "$lib/components/hero-grid/cells/EditActionsCell.svelte";
 
-	import ProgressCell from "./cells/ProgressCell.svelte";
+    // Card Theme Cells
+    import ClientCellCard from "$lib/components/hero-grid/card-cells/ClientCell.svelte";
+    import AgeCellCard from "$lib/components/hero-grid/card-cells/AgeCell.svelte";
+    import DateCellCard from "$lib/components/hero-grid/card-cells/BirthdayCell.svelte";
+    import TotalCellCard from "$lib/components/hero-grid/card-cells/TotalCell.svelte";
+    import StatusCellCard from "$lib/components/hero-grid/card-cells/StatusCell.svelte";
+	import ProgressCellCard from "$lib/components/hero-grid/card-cells/ProgressCell.svelte";
+
 	import { SearchIcon } from "lucide-svelte";
 	import DarkModeButton from "../DarkModeButton.svelte";
 	import Features from "../Features.svelte";
-    
+
     let clients = clientsJson as Client[];
 
     let theme = PrelineTheme;
@@ -23,6 +32,8 @@
     let currentPage = 1;
     let totalPages = 1;
     let totalResults = 0;
+    let itemsPerPageOptions:number[] =  [];
+    $:itemsPerPageOptions = theme == CardsPlusTheme ? [9, 18, 36, 72] : [10, 20, 50, 100];
 
     let showCheckboxes = true;
     let groupBy = "";
@@ -42,9 +53,6 @@
         amount: number;
         quantity: number;
     }
-
-    // let editItem: Client | undefined = undefined;
-    // let editModalElement: HTMLElement;
 
     let columns: GridColumn<Client>[] = [
         { 
@@ -87,7 +95,66 @@
             key: 'progress', 
             title: 'Progress',
             renderComponent: ProgressCell,
+        },
+        {
+            key: 'actions',
+            title: '',
+            sortable: false,
+            accessor: (row: Client) => { 
+                return {
+                    value: row, 
+                    editClicked: (value: Client) => {  
+                        alert(`Edit ${value.firstname} ${value.lastname}`)
+                    }
+                }
+            },
+            renderComponent: EditActionsCell
         }
+    ];
+
+    let cardColumns: GridColumn<Client>[] = [
+        { 
+            key: 'name', 
+            title: 'Name',
+            accessor: (row: Client) => {
+                return {
+                    avatar: row.avatar,
+                    firstname: row.firstname,
+                    lastname: row.lastname,
+                    email: row.email
+                }
+            }, 
+            sortValue: (row: Client) => {
+                return `${row.firstname} ${row.lastname}`
+            },
+            renderComponent: ClientCellCard
+        },
+        { 
+            key: 'status', 
+            title: 'Status',
+            renderComponent: StatusCellCard
+        },
+        { 
+            key: 'age', 
+            title: 'Age',
+            renderComponent: AgeCellCard
+        },
+        { 
+            key: 'birthdate', 
+            title: 'Birthday',
+            renderComponent: DateCellCard
+        },
+        { 
+            key: 'total', 
+            title: 'Total',
+            accessor: (row: Client) => { return row.amount * row.quantity },
+            renderComponent: TotalCellCard
+        },
+        { 
+            key: 'progress', 
+            title: 'Progress',
+            renderComponent: ProgressCellCard
+        },
         // {
         //     key: 'actions',
         //     title: '',
@@ -96,15 +163,15 @@
         //         return {
         //             value: row, 
         //             editClicked: (value: Client) => {  
-        //                 editItem = undefined; 
-        //                 editItem = value; 
-        //                 window.HSOverlay.open(editModalElement) 
+        //                 alert(`Edit ${value.firstname} ${value.lastname}`)
         //             }
         //         }
         //     },
         //     renderComponent: EditActionsCell
         // }
     ];
+
+    $: dataColumns = (theme === CardsPlusTheme ? cardColumns : columns);
 
     let textSearch = "";    
     let filters: GridFilter[];
@@ -153,22 +220,42 @@
 </script>
 
 
+
 <div class="flex flex-col items-center rounded-t-full relative mt-[2rem]">
     <div class="after:bg-radient-ellipse-c after:from-blue-600 after:dark:from-blue-600 after:from-0% after:to-transparent after:to-70% after:z-[-1] after:absolute after:top-[-10rem] after:left-0 after:w-full after:h-full after:animate-pulse after:duration-[6000ms] opacity-80"></div>
+
+    <div class="flex flex-col justify-center items-center gap-2 z-20 mb-3">
+        <span class="text-gray-600 dark:text-gray-300 text-sm">Try some themes:</span>
+        <div class="bg-gray-800 p-2 px-2 rounded-md">
+            <button type="button" class="inline-flex justify-center {theme === PlainTableCssTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = PlainTableCssTheme; itemsPerPage = 10;}}>Plain Table Css</button>
+            <button type="button" class="inline-flex justify-center {theme === PrelineTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = PrelineTheme; itemsPerPage = 10;}}>Preline</button>
+            <button type="button" class="relative inline-flex justify-center {theme === CardsPlusTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = CardsPlusTheme; itemsPerPage = 9;}}>
+                CardsPlus 
+                <span class="flex absolute top-0 end-0 -mt-2 -me-2">
+                    <span class="animate-ping absolute inline-flex size-full rounded-full bg-violet-400 opacity-75 dark:bg-violet-600"></span>
+                    <span class="relative inline-flex text-xs bg-violet-500 text-white rounded-full py-0.5 px-1.5">
+                        NEW
+                    </span>
+                </span>
+            </button>
+        </div>
+    </div>
+    
+
     <div class="relative z-20 max-w-full lg:w-[65rem] p-4 drop-shadow-xl rounded-lg overflow-clip  ">
         <div class="rounded-lg drop-shadow-lg">
-        <Grid 
-            data={clients} 
-            {columns} 
-            bind:currentPage 
-            bind:itemsPerPage 
-            bind:totalPages 
-            bind:totalResults
-            bind:selectedRows
-            bind:groupBy
-            bind:showCheckboxes
-            bind:filters
-            {theme} />
+            <Grid 
+                data={clients} 
+                columns={dataColumns} 
+                bind:currentPage 
+                bind:itemsPerPage 
+                bind:totalPages 
+                bind:totalResults
+                bind:selectedRows
+                bind:groupBy
+                bind:showCheckboxes
+                bind:filters
+                {theme} />
         </div>
 
         {#if totalResults == 0}
@@ -178,7 +265,7 @@
 
     <div class="z-10 bg-gradient-to-tl from-blue-600 to-violet-600 w-full flex flex-col items-center mt-[-3rem] pt-[3rem]">
         {#if selectedRows.length > 0}
-            <div class="bg-teal-500 text-sm text-white rounded-lg p-4" role="alert">
+            <div class="bg-teal-500 text-sm text-white rounded-lg p-4 mb-3" role="alert">
                 You selected <span class="font-bold">{selectedRows.length}</span> row{selectedRows.length > 1 ? "s" : ""}.
                 <button type="button" class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-teal-400 focus:outline-none focus:bg-blue-200 focus:text-blue-500 dark:hover:bg-teal-900" on:click={() => selectedRows = []}>
                     <span class="sr-only">Remove badge</span>
@@ -235,7 +322,7 @@
             {/if}
             {#if groupBy != ""}
                 <span class="inline-flex items-center gap-x-1.5 py-1.5 ps-3 pe-2 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-slate-800/50 dark:text-gray-300">
-                    Grouped by {columns.find(x => x.key == groupBy)?.title}
+                    Grouped by {dataColumns.find(x => x.key == groupBy)?.title}
                     <button type="button" class="flex-shrink-0 size-4 inline-flex items-center justify-center rounded-full hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-500 dark:hover:bg-blue-900" on:click={() => { groupBy = "" }}>
                         <span class="sr-only">Remove badge</span>
                         <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -243,7 +330,6 @@
                 </span>
             {/if}
         </div>
-
 
         <div class="flex flex-col items-center w-full mx-auto p-6">
             <div class="flex justify-center">
@@ -270,7 +356,7 @@
             
             <div class="my-3 rounded-lg bg-white/30 p-6 w-full max-w-3xl">
                 <div id="segment-1" class="" role="tabpanel" aria-labelledby="segment-item-1">
-                    <GridFooter bind:currentPage bind:totalPages bind:totalResults bind:itemsPerPage {theme} />
+                    <GridFooter bind:currentPage {totalPages} {totalResults} bind:itemsPerPage {itemsPerPageOptions} {theme} />
                 </div>
                 <div id="segment-2" class="hidden" role="tabpanel" aria-labelledby="segment-item-2">
                     <div class="grid grid-rows-3 grid-flow-col gap-4">
@@ -377,7 +463,7 @@
                     <div class="max-w-sm space-y-3 mx-auto">
                         <select id="groupBySelect" bind:value={groupBy} class="py-2 px-3 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400">
                             <option value="" class="text-gray-100">Select Column to Group By</option>
-                            {#each columns.filter(x => x.visible != false) as col (col.key)}
+                            {#each dataColumns.filter(x => x.visible != false && x.key != 'actions') as col (col.key)}
                                 <option value={col.key}>{col.title}</option>
                             {/each}
                         </select> 
@@ -385,12 +471,13 @@
                 </div>
                 <div id="segment-4" class="hidden" role="tabpanel" aria-labelledby="segment-item-4">
                     <div class="grid grid-rows-1 grid-cols-2 grid-flow-col gap-4">
-                        <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4">
-                            {#each columns as col (col.key)}
-                                <div class="flex">
+                    
+                        <div class="flex flex-col gap-2">
+                            {#each dataColumns as col (col.key)}
+                                <label for="checkbox-{col.key}" class="bg-white/50 dark:bg-slate-900 hover:bg-white/60 hover:dark:bg-slate-900/90 cursor-pointer rounded-md px-4 py-2 {col.visible ? '' : 'opacity-60'}" title="{col.title}">
                                     <input type="checkbox" value={col.key} checked={col.visible} on:change={() =>  col.visible = !col.visible } disabled={col.key == groupBy} class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" id="checkbox-{col.key}">
-                                    <label for="checkbox-{col.key}" class="text-sm text-gray-800 ms-3 dark:text-gray-400">{col.title}</label>
-                                </div>
+                                    <label for="checkbox-{col.key}" class="text-sm text-gray-800 ms-3 dark:text-gray-400">{col.title}{col.key == 'actions' ? 'Actions' : ''}</label>
+                                </label>
                             {/each}
                         </div>
                         <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4">
@@ -408,9 +495,10 @@
                             <span class="text-sm text-gray-800 ms-3 dark:text-gray-400"> Switch between light and dark mode</span>
                         </div>
 
-                        <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4 flex items-center gap-4">
-                            <button class="inline-flex justify-center {theme === PlainTableCssTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => theme = PlainTableCssTheme}>Plain Css Theme</button>
-                            <button class="inline-flex justify-center {theme === PrelineTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => theme = PrelineTheme}>Preline Theme</button>
+                        <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4 flex flex-wrap items-center gap-4">
+                            <button class="inline-flex justify-center {theme === PlainTableCssTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = PlainTableCssTheme; itemsPerPage = 10;}}>Plain Css Theme</button>
+                            <button class="inline-flex justify-center {theme === PrelineTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = PrelineTheme; itemsPerPage = 10;}}>Preline Theme</button>
+                            <button class="inline-flex justify-center {theme === CardsPlusTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = CardsPlusTheme; itemsPerPage = 9;}}>CardsPlus Theme</button>
                         </div>
                     </div>
                 </div>
@@ -421,106 +509,3 @@
 
     </div>
 </div>
-
-
-<!-- 
-<div id="edit-client-modal" bind:this={editModalElement} class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
-    <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-14 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
-    <div class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
-        <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
-            <h3 class="font-bold text-gray-800 dark:text-white flex">
-                Edit Client
-            </h3>
-            <button type="button" class="hs-dropup-toggle flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" data-hs-overlay="#edit-client-modal">
-                <span class="sr-only">Close</span>
-                <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
-        </div>
-        <div class="p-4 overflow-y-auto ">
-            <div class="flex gap-8">
-                <div class="flex flex-col gap-4">
-                    <div class="relative">
-                        <img class="mt-4 h-[7rem] w-[7rem] max-h-[7rem] max-w-[7rem] drop-shadow-md rounded-lg" src="{editItem?.avatar}" alt="" />
-                        <div class="bg-slate-700/20 rounded-full p-2 absolute bottom-2 right-2 cursor-pointer">
-                            <svelte:component this={CloudUpload} size="16" />
-                        </div>
-                    </div>
-                
-                    <div>
-                        {#if editItem?.status === "active"}
-                            <span class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
-                                <svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                                </svg>
-                                Active
-                            </span>
-                        {:else if editItem?.status === "inactive"}
-                            <span class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-red-100 text-red-800 rounded-full dark:bg-red-500/10 dark:text-red-500">
-                                <svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                                </svg>
-                                Inactive
-                            </span>
-                        {:else if editItem?.status === "pending"}
-                            <span class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full dark:bg-yellow-500/10 dark:text-yellow-500">
-                                <svg class="size-2.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                                </svg>
-                                Pending
-                            </span>
-                        {/if}
-                    </div>
-
-                    <div>
-                        <span class="block text-xs text-gray-400 dark:text-gray-600">Progress:</span>
-                        <div class="flex items-center gap-x-3">
-                            <span class="text-xs text-gray-500 dark:text-gray-400">{editItem?.progress}/10</span>
-                            <div class="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden dark:bg-gray-700">
-                                <div class="flex flex-col justify-center overflow-hidden bg-gray-800 dark:bg-gray-300" role="progressbar" style="width: {(editItem?.progress || 0) * 10}%" aria-valuenow={(editItem?.progress || 0) * 10} aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <form>
-                    <div class="mt-4 grid gap-4 lg:gap-6">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-                            <div>
-                                <label for="firstname" class="block mb-2 text-sm text-gray-700 font-medium dark:text-white">First Name</label>
-                                <input type="text" name="firstname" id="firstname" value={editItem?.firstname} class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none bg-slate-50 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600">
-                            </div>
-            
-                            <div>
-                                <label for="lastname" class="block mb-2 text-sm text-gray-700 font-medium dark:text-white">Last Name</label>
-                                <input type="text" name="lastname" id="lastname" value={editItem?.lastname} class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none bg-slate-50 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="email" class="block mb-2 text-sm text-gray-700 font-medium dark:text-white">Work Email</label>
-                            <input type="email" name="email" id="email" autocomplete="email" value={editItem?.email} class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none bg-slate-50 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600">
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-                            <div>
-                                <label for="amount" class="block mb-2 text-sm text-gray-700 font-medium dark:text-white">Amount</label>
-                                <input type="text" name="amount" id="amount" value={editItem?.amount}  class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none bg-slate-50 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600">
-                            </div>
-                            <div>
-                                <label for="quantity" class="block mb-2 text-sm text-gray-700 font-medium dark:text-white">Quantity</label>
-                                <input type="text" name="quantity" id="quantity" value={editItem?.quantity} class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none bg-slate-50 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600">
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
-            <button type="button" class="hs-dropup-toggle py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none bg-slate-50 dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" data-hs-overlay="#edit-client-modal">
-                Close
-            </button>
-            <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" data-hs-overlay="#edit-client-modal">
-                Save changes
-            </button>
-        </div>
-    </div>
-    </div>
-</div> -->

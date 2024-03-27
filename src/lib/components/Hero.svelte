@@ -65,7 +65,7 @@
       <!-- End Title -->
   
       <div class="mt-5 max-w-3xl text-center mx-auto">
-        <p class="text-lg text-gray-600 dark:text-gray-400">Unleash the power of your data with Svelte Data Grid – a versatile toolkit for seamless data manipulation, visualization, and customization. Transform your web apps with ease!</p>
+        <p class="text-lg text-gray-600 dark:text-gray-400">Unleash the power of your data with GridCraft – a versatile headless component for seamless data visualization and customization. Transform your SvelteKit apps with ease!</p>
       </div>
   
       <!-- Buttons -->
@@ -85,9 +85,6 @@
             </button>
             <span class:opacity-0={!showCopied} class:opacity-full={showCopied} class="absolute transition-all right-[-70px] text-gray-400 top-3">Copied!</span>
         </div>
-
-       
-        
       </div>
       <!-- End Buttons -->
   
