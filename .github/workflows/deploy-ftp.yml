@@ -23,6 +23,6 @@ jobs:
       with:
         server: mediakular.com
         username: gridcraft_user
-        password: ${{ secrets.password }}
+        password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./build/
         server-dir: /test/
