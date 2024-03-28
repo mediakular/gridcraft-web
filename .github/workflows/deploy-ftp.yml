@@ -32,4 +32,3 @@ jobs:
         protocol: ftps
         port: 21
         local-dir: ./build/
-        server-dir: /test/
