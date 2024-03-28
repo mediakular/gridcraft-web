@@ -67,11 +67,12 @@ Here's an example of how to switch between `PlainTableTheme` and `PrelineTheme`:
 <GridFooter ... {theme} />
 ```
 
-## Using PlainTableCss Theme
+## Using Predefined Themes
+### PlainTableCss Theme
 
 The PlainTableCSS is the default theme of GridCraft and offers a seamless solution for integrating customizable grid layouts into your projects. With support for both light and dark modes, this theme provides versatility and adaptability to suit your design preferences. By leveraging CSS classes and variables, you can effortlessly modify the appearance of your grid, ensuring it seamlessly integrates with your project's aesthetic.
 
-### Main Variables for Customization
+#### Main Variables for Customization
 
 In most cases it might be already sufficient to adjust the following main variables:
 
@@ -105,7 +106,7 @@ html.dark { /* or :global(html.dark) when in component context*/
 }
 ```
 
-### Additional Customization Variables
+#### Additional Customization Variables
 
 <details>
   <summary>Show all additional variables</summary>
@@ -215,12 +216,15 @@ html.dark { /* or :global(html.dark) when in component context*/
   ```
 </details>
 
-## Using PlainTable Theme
+
+### PlainTable Theme
 
 The PlainTable theme is **not** your typical theme for GridCraft. Instead, it serves as a robust foundation for developers looking to create their own custom themes. Designed with simplicity and flexibility in mind, PlainTable provides a clean slate for theme development, offering a starting point for crafting unique and tailored grid designs. While not intended for direct usage, PlainTable empowers developers to dive into theme customization, unleashing their creativity to build themes that perfectly align with their project requirements.
 
+Here you can find the code of the PlainTable theme [here on github](https://github.com/mediakular/gridcraft/tree/c7295346273f5dec5294cb8150f1066de24b5e36/src/lib/themes/plain-table).
 
-## Using PrelineTheme
+
+### Preline Theme
 
 The `PrelineTheme` is based on the design of [Preline](https://preline.co). 
 To use the PrelineTheme, you need to install [Tailwind CSS](https://tailwindcss.com/docs/guides/sveltekit) and include the necessary Svelte components in your Tailwind configuration file, so all classes get indexed:
@@ -229,7 +233,28 @@ To use the PrelineTheme, you need to install [Tailwind CSS](https://tailwindcss.
 export default {
   content: [
     ...
-    './node_modules/@mediakular/gridcraft/dist/themes/preline/*.svelte'
+    './node_modules/@mediakular/gridcraft/dist/themes/**/*.{js,svelte}' //supports all themes
+    //or: './node_modules/@mediakular/gridcraft/dist/themes/preline/*.svelte'
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [
+    ...
+  ],
+}
+```
+
+### CardsPlus Theme
+
+The CardsPlus theme follows the new approach of rendering rows as cards. The theme also uses [Tailwind CSS](https://tailwindcss.com/docs/guides/sveltekit), so you also need to include the necessary Svelte components in your Tailwind configuration file, so all classes get indexed:
+
+```typescript
+export default {
+  content: [
+    ...
+    './node_modules/@mediakular/gridcraft/dist/themes/**/*.{js,svelte}' //supports all themes
+    //or: './node_modules/@mediakular/gridcraft/dist/themes/cards-plus/*.svelte'
   ],
   theme: {
     extend: {},
