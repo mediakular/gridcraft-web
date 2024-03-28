@@ -3,7 +3,7 @@ name: 🚀 Deploy website on push
 jobs:
   web-deploy:
     name: 🎉 Deploy
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
@@ -15,7 +15,6 @@ jobs:
       
     - name: 🔨 Build Project
       run: |
-        npm audit fix
         npm install
         npm run build
     
