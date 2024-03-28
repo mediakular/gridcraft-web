@@ -29,5 +29,7 @@ jobs:
         server: mediakular.com
         username: gridcraft_user
         password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftps
+        port: 21
         local-dir: ./build/
         server-dir: /test/
