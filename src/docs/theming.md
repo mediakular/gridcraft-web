@@ -233,8 +233,8 @@ To use the PrelineTheme, you need to install [Tailwind CSS](https://tailwindcss.
 export default {
   content: [
     ...
-    './node_modules/@mediakular/gridcraft/dist/themes/**/*.{js,svelte}' //supports all themes
-    //or: './node_modules/@mediakular/gridcraft/dist/themes/preline/*.svelte'
+    './node_modules/@mediakular/gridcraft/dist/themes/preline/**/*.svelte'
+    //or: './node_modules/@mediakular/gridcraft/dist/themes/**/*.svelte' in order to support all themes
   ],
   theme: {
     extend: {},
@@ -253,8 +253,8 @@ The CardsPlus theme follows the new approach of rendering rows as cards. The the
 export default {
   content: [
     ...
-    './node_modules/@mediakular/gridcraft/dist/themes/**/*.{js,svelte}' //supports all themes
-    //or: './node_modules/@mediakular/gridcraft/dist/themes/cards-plus/*.svelte'
+    './node_modules/@mediakular/gridcraft/dist/themes/cards-plus/**/*.svelte' 
+     //or: './node_modules/@mediakular/gridcraft/dist/themes/**/*.svelte' in order to support all themes
   ],
   theme: {
     extend: {},
