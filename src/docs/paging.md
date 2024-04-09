@@ -91,14 +91,15 @@ Optionally, modify the default paging variables such as `itemsPerPage`, `current
 
 <Step number=3 title="Define Paging Functions">
 
-Define the functions for navigating to the next and previous pages:
+Create a new component ´MyPaging.svelte´ and define the functions for navigating to the next and previous pages:
 
 ```svelte
 <script>
-import PagingStore from "$lib/stores/PagingStore.js";
-import type { PagingData } from "$lib/types/index.js";
+import { PagingStore, type PagingData} from "@mediakular/gridcraft";
 
 $: paging = $PagingStore;
+
+let itemsPerPage = 10;
 
 function nextPage() {
     PagingStore.update((value:PagingData) => {
@@ -117,19 +118,26 @@ function prevPage() {
         };
     })
 }
+
+function handleItemsPerPageChange() {
+    PagingStore.update((val) => {
+        return {
+            ...val,
+            itemsPerPage: itemsPerPage
+        }
+    });
+}
 </script>
 ```
 </Step>
 
 <Step number=4 title="Implement Paging">
 
-Define your custom pagination in the markup:
+In the same component define your custom pagination in the markup:
 
 ```svelte
-<Grid bind:data={clients} />
-
 <div>
-    <select bind:value={paging.itemsPerPage}>
+    <select bind:value={itemsPerPage} on:change={handleItemsPerPageChange}>
         {#each paging.itemsPerPageOptions as option (option)}
             <option value="{option}" selected={option == paging.itemsPerPage}>{option}</option>
         {/each}
@@ -150,5 +158,5 @@ Define your custom pagination in the markup:
 </Step>
 
 <Step number=5 title="Done!">
-That's it! You have successfully implemented customized pagination and footer in your GridCraft data table.
+Use your new component and that's it! You've successfully implemented customized pagination and footer in your GridCraft data table.
 </Step>
