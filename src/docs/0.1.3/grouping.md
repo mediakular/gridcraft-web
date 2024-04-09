@@ -53,6 +53,7 @@ Group headers are collapsable/expandable. By default all group headers are expan
     groupby={columnKey} />
 ```
 
+<DocuGrid itemCount={5} groupby="status" columns=[firstname,lastname,age,status] groupsExpandedDefault={false}></DocuGrid>
 
 
 ## Full Example

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Grid, GridFooter, type GridColumn, PrelineTheme } from "@mediakular/gridcraft"
+    import { Grid, GridFooter, ThemeStore, type GridColumn, PrelineTheme, PagingStore, type PagingData } from "@mediakular/gridcraft"
     import clientsJson from '$lib/data/samples/clients.json';
 
     import ClientCell from "$lib/components/hero-grid/cells/ClientCell.svelte";
@@ -12,22 +12,29 @@
     export let showFooter = false;
 
     export let itemCount = 10;
+    export let itemsPerPage = 10;
+
     export let groupby = "";
     export let columns:string[] = [];
     export let groupsExpandedDefault = true;
 
-    export let itemsPerPage = 10;
-    export let currentPage = 1;
-    export let totalPages = 1;
-    export let totalResults = 0;
     export let showCheckboxes = false;
     export let selectedRows:Client[] = [];
-    export let itemsPerPageOptions = [10, 20, 30];
 
     export let showCheckedDebug = false;
     export let showColumnsShowHide = false;
 
+    export let itemsPerPageOptions = [10, 20, 50, 100];
     export let theme = PrelineTheme;
+
+    ThemeStore.set(theme);
+
+    $: PagingStore.set({
+            itemsPerPage: itemsPerPage,
+            currentPage: 1,
+            itemsPerPageOptions: itemsPerPageOptions
+        } as PagingData
+    );
 
     interface Client {
         id: string;
@@ -141,12 +148,7 @@
         data={clients} 
         columns={cols} 
         groupBy={groupby} 
-        {theme} 
-        {groupsExpandedDefault} 
-        bind:itemsPerPage={itemsPerPage}
-        bind:currentPage={currentPage}
-        bind:totalPages={totalPages}
-        bind:totalResults={totalResults}
+        {groupsExpandedDefault}
         {showCheckboxes}
         bind:selectedRows={selectedRows}
     />
@@ -160,12 +162,5 @@
 {/if}
 
 <div class:hidden={!showFooter} >
-    <GridFooter 
-        {theme} 
-        bind:itemsPerPageOptions={itemsPerPageOptions}
-        bind:itemsPerPage={itemsPerPage}
-        bind:currentPage={currentPage}
-        bind:totalPages={totalPages}
-        bind:totalResults={totalResults}
-    />
+    <GridFooter />
 </div>

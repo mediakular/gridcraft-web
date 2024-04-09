@@ -21,54 +21,44 @@ To implement pagination using the predefined Footer Component in GridCraft, foll
 Import the `Grid` and GridFooter components from `@mediakular/gridcraft`:
    
 ```typescript
-import { Grid, GridFooter } from "@mediakular/gridcraft";
+import { Grid, GridFooter, PagingStore } from "@mediakular/gridcraft";
 ```
 </Step>
 
-<Step number=2 title="Define Paging Variables">
+<Step number=2 title="Modify Paging Variables (optional)">
 
-Define the paging variables such as `itemsPerPage`, `currentPage`, `totalPages`, `totalResults`, and optionally `itemsPerPageOptions`:
+Optionally, modify the paging variables such as `itemsPerPage`, `currentPage`, or `itemsPerPageOptions`.
 
 ```typescript
-let itemsPerPage = 10;
-let currentPage = 1;
-let totalPages = 1;
-let totalResults = 0;
-let itemsPerPageOptions = [10, 20, 50, 100]; //optional, default values
+ PagingStore.set({
+        itemsPerPage: 20,
+        currentPage: 2,
+        itemsPerPageOptions: [10, 20, 50]
+    } as PagingData
+);
 ```
 </Step>
 
-<Step number=2 title="Set Properties">
+<Step number=3 title="Use GridFooter Component">
 
-Set these variables in the `Grid` component and the referenced `GridFooter` component:
+Include the `GridFooter` component one or multiple times:
 
 ```svelte
-<Grid 
-    bind:data={clients} 
-    bind:currentPage 
-    bind:itemsPerPage 
-    bind:totalPages 
-    bind:totalResults />
+<Grid bind:data={clients} />
 
-<GridFooter 
-    bind:currentPage 
-    bind:totalPages 
-    bind:totalResults 
-    bind:itemsPerPage 
-    bind:itemsPerPageOptions />
+<GridFooter />
 ```
 </Step>
 
-<Step number=3 title="Done!">
+<Step number=4 title="Done!">
 
 That's it! Now you have implemented simple pagination in your GridCraft data table.
 
 
-!> In case you only want to change the paging buttons you can change the theme for the `Paging` component, as the `GridFooter` uses the `Paging` component! Learn more about theming in the theming section.
+!> In case you only want to change the paging buttons you can change the theme for the `Paging` component, as the `GridFooter` uses the `Paging` component! Learn more about theming in the [theming section](/theming).
 </Step>
 
 <DocuGrid itemCount={50} columns=[firstname,lastname,age,status] showFooter={true} itemsPerPage={5} itemsPerPageOptions={[5,10]}></DocuGrid>
-
 
 
 ## Customized Pagination and Footer
@@ -84,18 +74,17 @@ import { Grid } from "@mediakular/gridcraft";
 ```
 </Step>
 
-<Step number=2 title="Define Necessary Variables">
+<Step number=2 title="Modify Paging Variables (Optional)">
 
-Define the paging variables such as `itemsPerPage`, `totalPages`, `totalResults`, and `itemsPerPageOptions`, and the `currentPage` variable with reactive assignment:
+Optionally, modify the default paging variables such as `itemsPerPage`, `currentPage`, or `itemsPerPageOptions`.
 
 ```typescript
-let itemsPerPage = 10;
-let totalPages = 1;
-let totalResults = 0;
-let itemsPerPageOptions = [10, 20, 50, 100]; 
-
-let currentPage = 1;
-$: currentPage = Math.max(1, Math.min(currentPage, totalPages)); // this is currently necessesary to fix a bug and might be unnecessary in future versions
+ PagingStore.set({
+        itemsPerPage: 20,
+        currentPage: 2,
+        itemsPerPageOptions: [10, 20, 50]
+    } as PagingData
+);
 ```
 
 </Step>
@@ -104,47 +93,55 @@ $: currentPage = Math.max(1, Math.min(currentPage, totalPages)); // this is curr
 
 Define the functions for navigating to the next and previous pages:
 
-```typescript
+```svelte
+<script>
+import PagingStore from "$lib/stores/PagingStore.js";
+import type { PagingData } from "$lib/types/index.js";
+
+$: paging = $PagingStore;
+
 function nextPage() {
-    if (currentPage < totalPages) {
-        currentPage += 1;
-    }
+    PagingStore.update((value:PagingData) => {
+        return {
+            ...value,
+            currentPage: value.currentPage += 1
+        };
+    })
 }
 
 function prevPage() {
-    if (currentPage > 1) {
-        currentPage -= 1;
-    }
+    PagingStore.update((value:PagingData) => {
+        return {
+            ...value,
+            currentPage: value.currentPage -= 1
+        };
+    })
 }
+</script>
 ```
 </Step>
 
-<Step number=4 title="Set Variables And Implement Paging">
+<Step number=4 title="Implement Paging">
 
-Set these variables in the Grid component and define your custom pagination in the markup:
+Define your custom pagination in the markup:
 
 ```svelte
-<Grid 
-    bind:data={clients} 
-    bind:currentPage 
-    bind:itemsPerPage 
-    bind:totalPages 
-    bind:totalResults />
+<Grid bind:data={clients} />
 
 <div>
-    <select bind:value={itemsPerPage}>
-        {#each itemsPerPageOptions as option (option)}
-            <option value="{option}" selected={option == itemsPerPage}>{option}</option>
+    <select bind:value={paging.itemsPerPage}>
+        {#each paging.itemsPerPageOptions as option (option)}
+            <option value="{option}" selected={option == paging.itemsPerPage}>{option}</option>
         {/each}
     </select>
 
-    Page <span>{currentPage}</span> of <span>{totalPages}</span>
+    Page <span>{paging.currentPage}</span> of <span>{paging.totalPages}</span>
 
-    <button on:click={prevPage} type="button" disabled={currentPage == 1 ? true : false}>
+    <button on:click={prevPage} type="button" disabled={paging.currentPage == 1 ? true : false}>
         Previous
     </button>
 
-    <button on:click={nextPage} type="button" disabled={currentPage < totalPages ? false : true}>
+    <button on:click={nextPage} type="button" disabled={paging.currentPage < paging.totalPages ? false : true}>
         Next
     </button>
 </div>

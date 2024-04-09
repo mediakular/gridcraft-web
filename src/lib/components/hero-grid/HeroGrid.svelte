@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Grid, GridFooter, type GridColumn, type GridFilter, PlainTableCssTheme, PrelineTheme, CardsPlusTheme } from "@mediakular/gridcraft";
+	import { Grid, GridFooter, type GridColumn, type GridFilter, PlainTableCssTheme, PrelineTheme, CardsPlusTheme, ThemeStore, PagingStore, type PagingData, type GridTheme } from "@mediakular/gridcraft";
     import clientsJson from '$lib/data/samples/clients.json';
 
 	import HeroTable from "$lib/components/hero-grid/appearance/Table.svelte";
@@ -24,16 +24,17 @@
 	import Features from "../Features.svelte";
 
     let clients = clientsJson as Client[];
-
     let theme = PrelineTheme;
     theme.grid.container = HeroTable;
 
-    let itemsPerPage = 10;
-    let currentPage = 1;
-    let totalPages = 1;
-    let totalResults = 0;
-    let itemsPerPageOptions:number[] =  [];
-    $:itemsPerPageOptions = theme == CardsPlusTheme ? [9, 18, 36, 72] : [10, 20, 50, 100];
+    ThemeStore.set(theme);
+
+    PagingStore.set({
+            itemsPerPage: (theme == CardsPlusTheme ? 9 : 10),
+            currentPage: 1,
+            itemsPerPageOptions: (theme == CardsPlusTheme ? [9, 18, 36, 72] : [10, 20, 50, 100])
+        } as PagingData
+    );
 
     let showCheckboxes = true;
     let groupBy = "";
@@ -217,6 +218,22 @@
 
     let progressFilter = 10;
     let progressOperator = "lte";
+
+    function handleThemeChange(theme: GridTheme) {
+        if (theme == PrelineTheme) {
+            theme.grid.container = HeroTable;
+        }
+
+        ThemeStore.set(theme);
+
+        dataColumns = (theme === CardsPlusTheme ? cardColumns : columns);
+
+        PagingStore.set({
+            itemsPerPage: (theme == CardsPlusTheme ? 9 : 10),
+            currentPage: 1,
+            itemsPerPageOptions: (theme == CardsPlusTheme ? [9, 18, 36, 72] : [10, 20, 50, 100])
+        } as PagingData);
+    }
 </script>
 
 
@@ -227,9 +244,9 @@
     <div class="flex flex-col justify-center items-center gap-2 z-20 mb-3">
         <span class="text-gray-600 dark:text-gray-300 text-sm">Try some themes:</span>
         <div class="bg-gray-300/80 dark:bg-gray-800/80 backdrop-blur p-2 px-2 rounded-md">
-            <button type="button" class="inline-flex justify-center {theme === PlainTableCssTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-white'} items-center gap-x-3 text-center hover:opacity-90 border border-transparent text-sm font-medium rounded-md focus:outline-none focus:ring-1  py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = PlainTableCssTheme; itemsPerPage = 10;}}>Plain Table Css</button>
-            <button type="button" class="inline-flex justify-center {theme === PrelineTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-white'} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-sm font-medium rounded-md focus:outline-none focus:ring-1  py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = PrelineTheme; itemsPerPage = 10;}}>Preline</button>
-            <button type="button" class="relative inline-flex justify-center {theme === CardsPlusTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-white'} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-sm font-medium rounded-md focus:outline-none focus:ring-1  py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = CardsPlusTheme; itemsPerPage = 9;}}>
+            <button type="button" class="inline-flex justify-center {$ThemeStore === PlainTableCssTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-white'} items-center gap-x-3 text-center hover:opacity-90 border border-transparent text-sm font-medium rounded-md focus:outline-none focus:ring-1  py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() =>  handleThemeChange(PlainTableCssTheme)}>Plain Table Css</button>
+            <button type="button" class="inline-flex justify-center {$ThemeStore === PrelineTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-white'} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-sm font-medium rounded-md focus:outline-none focus:ring-1  py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => handleThemeChange(PrelineTheme)}>Preline</button>
+            <button type="button" class="relative inline-flex justify-center {$ThemeStore === CardsPlusTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-white'} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-sm font-medium rounded-md focus:outline-none focus:ring-1  py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => handleThemeChange(CardsPlusTheme)}>
                 CardsPlus 
                 <span class="flex absolute top-0 end-0 -mt-2 -me-2">
                     <span class="animate-ping absolute inline-flex size-full rounded-full bg-violet-400 opacity-75 dark:bg-violet-600"></span>
@@ -247,18 +264,14 @@
             <Grid 
                 data={clients} 
                 columns={dataColumns} 
-                bind:currentPage 
-                bind:itemsPerPage 
-                bind:totalPages 
-                bind:totalResults
                 bind:selectedRows
                 bind:groupBy
                 bind:showCheckboxes
                 bind:filters
-                {theme} />
+                />
         </div>
 
-        {#if totalResults == 0}
+        {#if $PagingStore.totalResults == 0}
             <div class="text-sm text-gray-800 dark:text-gray-700 p-4 bg-white drop-shadow-md dark:bg-slate-200 rounded-md mt-2">No rows selected</div>
         {/if}
     </div>
@@ -334,7 +347,7 @@
         <div class="flex flex-col items-center w-full mx-auto p-6">
             <div class="flex justify-center">
                 <div class="flex bg-gray-100/10 hover:bg-gray-100/40 rounded-lg transition p-1 dark:bg-gray-700 dark:hover:bg-gray-600">
-                    <nav class="flex space-x-2" aria-label="Tabs" role="tablist">
+                    <nav class="sm:space-x-2 grid grid-cols-2 sm:flex sm:flex-row " aria-label="Tabs" role="tablist">
                         <button type="button" class="hs-tab-active:bg-white/80 hs-tab-active:text-gray-800 hs-tab-active:dark:bg-gray-800 hs-tab-active:dark:text-gray-400 dark:hs-tab-active:bg-gray-800 py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm text-gray-200 hover:text-gray-700 font-medium rounded-lg hover:hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:text-white transition-all active" id="segment-item-1" data-hs-tab="#segment-1" aria-controls="segment-1" role="tab">
                             Paging
                         </button>
@@ -356,7 +369,7 @@
             
             <div class="my-3 rounded-lg bg-white/30 p-6 w-full max-w-3xl">
                 <div id="segment-1" class="" role="tabpanel" aria-labelledby="segment-item-1">
-                    <GridFooter bind:currentPage {totalPages} {totalResults} bind:itemsPerPage {itemsPerPageOptions} {theme} />
+                    <GridFooter />
                 </div>
                 <div id="segment-2" class="hidden" role="tabpanel" aria-labelledby="segment-item-2">
                     <div class="grid grid-rows-3 grid-flow-col gap-4">
@@ -496,9 +509,9 @@
                         </div>
 
                         <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4 flex flex-wrap items-center gap-4">
-                            <button class="inline-flex justify-center {theme === PlainTableCssTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = PlainTableCssTheme; itemsPerPage = 10;}}>Plain Css Theme</button>
-                            <button class="inline-flex justify-center {theme === PrelineTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = PrelineTheme; itemsPerPage = 10;}}>Preline Theme</button>
-                            <button class="inline-flex justify-center {theme === CardsPlusTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => {theme = CardsPlusTheme; itemsPerPage = 9;}}>CardsPlus Theme</button>
+                            <button class="inline-flex justify-center {$ThemeStore === PlainTableCssTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => handleThemeChange(PlainTableCssTheme)}>Plain Css Theme</button>
+                            <button class="inline-flex justify-center {$ThemeStore === PrelineTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => handleThemeChange(PrelineTheme)}>Preline Theme</button>
+                            <button class="inline-flex justify-center {$ThemeStore === CardsPlusTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() =>handleThemeChange(CardsPlusTheme)}>CardsPlus Theme</button>
                         </div>
                     </div>
                 </div>
