@@ -16,12 +16,12 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '20'
-        cache: 'pnpm'
+        #cache: 'pnpm'
       
     - name: 🔨 Build Project
       run: |
-        pnpm install
-        pnpm run build
+        npm install
+        ppm run build
     
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
