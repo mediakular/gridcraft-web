@@ -9,8 +9,8 @@ devDependencies:
     specifier: ^3.0.2
     version: 3.0.2
   '@mediakular/gridcraft':
-    specifier: ^0.2.3-beta
-    version: 0.2.3-beta(svelte@4.2.12)
+    specifier: ^0.2.4-beta
+    version: 0.2.4-beta(svelte@4.2.12)
   '@sveltejs/adapter-auto':
     specifier: ^3.0.0
     version: 3.2.0(@sveltejs/kit@2.5.5)
@@ -356,8 +356,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /@mediakular/gridcraft@0.2.3-beta(svelte@4.2.12):
-    resolution: {integrity: sha512-mXI04rzH1GjRpmrVzM2Uv4OaFCZut+4r2flNFlDmpBMzDW55LMgZFVJxPHDeYUtXoEeWX2kgPtpR7A4ZI0FBZg==}
+  /@mediakular/gridcraft@0.2.4-beta(svelte@4.2.12):
+    resolution: {integrity: sha512-dsN4E+xNWVNPrCTweKjOY1ZSaoaUURA9uxzHe5p1CocGgaGf6pM/8C7DTrdpsg8znShclxj0iHH9qNcq1ySwhA==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:

@@ -90,6 +90,8 @@ let columns: GridColumn<Client>[] = [
 ];
 ```
 
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/r9w45okx66mxp99)
+
 ### Column Sorting
 
 By default column sorting is enabled for all columns. If you would like to disable column sorting all you need to do is to set the column property `sortable` to `false`.

@@ -21,7 +21,7 @@ To implement pagination using the predefined Footer Component in GridCraft, foll
 Import the `Grid` and GridFooter components from `@mediakular/gridcraft`:
    
 ```typescript
-import { Grid, GridFooter, PagingStore } from "@mediakular/gridcraft";
+import { Grid, GridFooter } from "@mediakular/gridcraft";
 ```
 </Step>
 
@@ -30,23 +30,22 @@ import { Grid, GridFooter, PagingStore } from "@mediakular/gridcraft";
 Optionally, modify the paging variables such as `itemsPerPage`, `currentPage`, or `itemsPerPageOptions`.
 
 ```typescript
- PagingStore.set({
-        itemsPerPage: 20,
-        currentPage: 2,
-        itemsPerPageOptions: [10, 20, 50]
-    } as PagingData
-);
+let paging = {
+    itemsPerPage: 20,
+    currentPage: 2,
+    itemsPerPageOptions: [10, 20, 50]
+} as PagingData;
 ```
 </Step>
 
 <Step number=3 title="Use GridFooter Component">
 
-Include the `GridFooter` component one or multiple times:
+Include the `GridFooter` component one or multiple times and assign the paging property:
 
 ```svelte
-<Grid bind:data={clients} />
+<Grid bind:data={clients} {paging}/>
 
-<GridFooter />
+<GridFooter bind:paging />
 ```
 </Step>
 
@@ -79,14 +78,12 @@ import { Grid } from "@mediakular/gridcraft";
 Optionally, modify the default paging variables such as `itemsPerPage`, `currentPage`, or `itemsPerPageOptions`.
 
 ```typescript
- PagingStore.set({
-        itemsPerPage: 20,
-        currentPage: 2,
-        itemsPerPageOptions: [10, 20, 50]
-    } as PagingData
-);
+let paging = {
+    itemsPerPage: 20,
+    currentPage: 2,
+    itemsPerPageOptions: [10, 20, 50]
+} as PagingData;
 ```
-
 </Step>
 
 <Step number=3 title="Define Paging Functions">
@@ -95,43 +92,35 @@ Create a new component ´MyPaging.svelte´ and define the functions for navigati
 
 ```svelte
 <script>
-import { PagingStore, type PagingData} from "@mediakular/gridcraft";
+import { type PagingData } from "@mediakular/gridcraft";
 
-$: paging = $PagingStore;
+//defining default paging data
+export let paging: PagingData = {
+    currentPage: 1,
+    itemsPerPage: 10,
+    itemsPerPageOptions: [10, 25, 50, 100],
+    totalPages: 1,
+    totalResults: 0,
+} as PagingData; 
 
 let itemsPerPage = 10;
 
 function nextPage() {
-    PagingStore.update((value:PagingData) => {
-        return {
-            ...value,
-            currentPage: value.currentPage += 1
-        };
-    })
+    paging.currentPage += 1;
 }
 
 function prevPage() {
-    PagingStore.update((value:PagingData) => {
-        return {
-            ...value,
-            currentPage: value.currentPage -= 1
-        };
-    })
+    paging.currentPage -= 1;
 }
 
 function handleItemsPerPageChange() {
-    PagingStore.update((val) => {
-        return {
-            ...val,
-            itemsPerPage: itemsPerPage
-        }
-    });
+    paging.itemsPerPage = itemsPerPage;
 }
 </script>
 ```
 </Step>
 
-<Step number=4 title="Implement Paging">
+<Step number=4 title="Implement Paging Markup">
 
 In the same component define your custom pagination in the markup:
 

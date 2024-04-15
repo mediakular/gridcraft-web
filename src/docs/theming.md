@@ -25,7 +25,7 @@ This means, you have full access to the structure of the rendered grid and you c
 Begin by importing the necessary theme components from GridCraft.
 
 ```typescript
-import { Grid, ThemeStore, PrelineTheme } from "@mediakular/gridcraft";
+import { Grid, PrelineTheme /* Optional: GridFooter, GridPaging */ } from "@mediakular/gridcraft";
 ```
 </Step>
 
@@ -39,10 +39,12 @@ theme.grid.container = MyTableContainer;
 </Step>
 
 <Step number=3 title="Assign Theme">
-Set the theme in the `ThemeStore`:
+Set the theme as property to your `Grid`, `GridFooter` or `GridPaging`:
 
 ```svelte
-ThemeStore.set(theme);
+<Grid ... {theme} />
+<GridFooter ... {theme} />
+<GridPaging ... {theme} />
 ```
 </Step>
 
@@ -54,16 +56,16 @@ Here's an example of how to switch between `PlainTableTheme` and `PrelineTheme`:
 
 ```svelte
 <script>
-    import { Grid, ThemeStore, GridFooter, PrelineTheme, PlainTableCssTheme } from "@mediakular/gridcraft";
+    import { Grid, GridFooter, PrelineTheme, PlainTableCssTheme } from "@mediakular/gridcraft";
     ...
-    ThemeStore.set(PrelineTheme);
+    let theme = PlainTableCssTheme;
 </script>
 
-<button on:click={() => ThemeStore.set(PlainTableCssTheme)}>Plain Css Theme</button>
-<button on:click={() => ThemeStore.set(PrelineTheme)}>Preline Theme</button>
+<button on:click={() => theme = PlainTableCssTheme}>Plain Css Theme</button>
+<button on:click={() => theme = PrelineTheme}>Preline Theme</button>
 
-<Grid ... />
-<GridFooter />
+<Grid ... {theme}/>
+<GridFooter {theme}/>
 ```
 
 ## Using Predefined Themes
@@ -269,30 +271,64 @@ export default {
 
 You can also overwrite existing themes to make specific changes without creating a completely new theme. Here's an example of how to modify a theme by replacing the grid container component:
 
-```typescript
-import { Grid, PlainTableTheme } from "@mediakular/gridcraft";
-import MyTableContainer from "$lib/components/grid/theme/MyTableContainer.svelte";
+```svelte
+<script>
+  import { Grid, PlainTableTheme } from "@mediakular/gridcraft";
+  import MyTableContainer from "$lib/components/grid/theme/MyTableContainer.svelte";
 
-let theme = PlainTableTheme;
-theme.grid.container = MyTableContainer;
+  let theme = PlainTableTheme;
+  theme.grid.container = MyTableContainer;
+</script>
 
-ThemeStore.set(theme);
+<Grid ... {theme} />
 ```
 
-In this way, you can tailor the themes in GridCraft to meet the unique requirements of your application's design. Experiment with different themes and configurations to find the perfect fit for your project.
+This way, you can tailor the themes in GridCraft to meet the unique requirements of your application's design. Experiment with different themes and configurations to find the perfect fit for your project.
 
-See more about the theming object on the [Data Stores API](./api-data-stores) page.
+### Theme Structure
 
+If you want to change certain parts of your chosen theme or if you want to create your own theme you can refer to the following `GridTheme` type:
+
+```typescript
+export type GridTheme = {
+    grid: {
+        container: ComponentType;
+        header: {
+            container: ComponentType,
+            row: ComponentType,
+            content: ComponentType,
+            checkbox: ComponentType,
+            sortIndicator: ComponentType,
+        },
+        groupby: {
+            container: ComponentType,
+            checkbox: ComponentType,
+            cell: ComponentType,
+            content: ComponentType,
+            rowsCount: ComponentType,
+        },
+        body: {
+            container: ComponentType,
+            row: ComponentType,
+            cell: ComponentType,
+            checkbox: ComponentType,
+            content: ComponentType
+        }
+    }
+    footer: ComponentType;
+    paging: ComponentType;
+}
+```
 
 ## Creating a Custom Theme
 
 If you want create your custom theme the best way to get started is to copy the `PlainTableTheme` theme. This theme is the most basic table theme, without any styles or classes and serves perfectly as a template for your own theme. 
 
-You can copy  `PlainTableTheme` into your own project and transform it to fit your needs.
+You can copy `PlainTableTheme` into your own project and transform it to fit your needs.
 
 Here you can find the code on [GitHub](https://github.com/mediakular/gridcraft/tree/master/src/lib/themes/plain-table).
 
-After you adapted the .svelte files of your template, you can change the name of your new theme in the index.ts file in the root of the theme: 
+After you have adapted the .svelte files of your template, you can change the name of your new theme in the index.ts file in the root of the theme: 
 
 ```typescript
 const MyFirstTableTheme : GridTheme = {
@@ -308,8 +344,13 @@ export default MyFirstTableTheme;
 
 ... and use it on your grid: 
 
-```typescript
-import MyFirstTableTheme from "$lib/components/grid/theme/my-first-table-theme"
+```svelte
+<script>
+  import MyFirstTableTheme from "$lib/components/grid/theme/my-first-table-theme"
 
-ThemeStore.set(MyFirstTableTheme);
+  let theme = MyFirstTableTheme;
+</script>
+
+<Grid ... {theme} />
 ```
+

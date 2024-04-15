@@ -42,7 +42,6 @@ let columnKey = "status";
 
 <DocuGrid itemCount={5} groupby="status" columns=[firstname,lastname,age,status]></DocuGrid>
 
-
 Group headers are collapsable/expandable. By default all group headers are expanded. If we want them to be collapsed by default we can can set the property `groupsExpandedDefault` to `false`.
 
 ```svelte title="+page.svelte"
@@ -52,7 +51,6 @@ Group headers are collapsable/expandable. By default all group headers are expan
     groupsExpandedDefault={false}
     groupby={columnKey} />
 ```
-
 
 
 ## Full Example
