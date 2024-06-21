@@ -411,3 +411,115 @@ Next, let's define the `EditActionsCell` component:
     Something else
 </a>
 ```
+
+### Inline-Edit Column
+
+In order to implement an inline editing feature we need to implement a Custom Column in which we can define the logic that allows us to edit a column.
+In this example we show a simple text column which value we allow the user to edit showing an edit button and a save button. The edit button will display a text field and the save button allows us to save the change in our database. 
+
+Let's imagine this simple column definition. This column value we will make editable inline:
+
+```svelte 
+<script>
+let columns = [
+    ...
+    { 
+        key: 'firstname', 
+        title: 'First name',
+    },
+    ...
+]
+
+</script>
+```
+
+#### Adapt the Cell Definition
+
+Now that we have the column, we need to define a `renderComponent` for the column. Here we will call it `FirstnameEditCell`.
+First, we create the svelte component `FirstnameEditCell.svelte`, import it and reference it as our `renderComponent`.
+
+```svelte 
+<script>
+import FirstnameEditCell from "$lib/components/grid/cells/FirstnameEditCell.svelte"
+
+let columns = [
+    ...
+    { 
+        key: 'firstname', 
+        title: 'First name',
+        renderComponent: FirstnameEditCell
+    },
+    ...
+]
+
+</script>
+```
+
+Next, we need to add an `accessor` which allows us to set a `value` parameter and a `onSaveChanges` function which will serve as a callback to save the edited data. 
+
+>! We could also add further parameters. For example we could set a `firstname` and `lastname` parameter and allow editing both fields in the same column.
+
+```svelte 
+<script>
+import FirstnameEditCell from "$lib/components/grid/cells/FirstnameEditCell.svelte"
+
+let columns = [
+    ...
+    { 
+        key: 'firstname', 
+        title: 'First name',
+        accessor: (row: Client) => {
+            return {
+                value: row.firstname,
+                onSaveChanges: (newValue:string) => {
+                    console.log("New value:", newValue, "Old value:", row.firstname);
+                    //TODO: Here we are saving the changes into the database
+                }
+            }
+        },
+        renderComponent: FirstnameEditCell
+    },
+    ...
+]
+
+</script>
+```
+
+#### Implement The Inline-Edit Component
+
+Then we need to implement the `FirstnameEditCell.svelte` component:
+
+```svelte title="EditActionsCell.svelte"
+<script>
+    export let value: string;
+	export let onSaveChanges: (newFirstname:number) => void;
+	
+	let isEdit = false;
+
+	function handleSaveChanges() {
+		onSaveChanges(value);
+	}
+</script>
+
+{#if !isEdit}
+    <span>{value ? value : '-'}</span>
+    <button on:click|preventDefault={() => isEdit = true}>
+       Edit
+    </button>
+{:else}
+    <input type="text" bind:value />
+    <button on:click={() => { isEdit = false; handleEditClick() }}>
+        Save
+    </button>
+{/if}
+```
+
+The `isEdit` variable allows the user to toggle the view between display and edit via the buttons. When `isEdit` is `true` we are displaying the input where the user can change the value. When the `Save`-button is clicked, we fire a function that activates or callback to save the data in our database.
+
+That's it! We implemented an inline-editing column.
+
+#### Advanced Example
+
+Here you can find an advanced example showing inline editing for text, dates and numbers:
+
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/7dsbxb1joa8kad9)

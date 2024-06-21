@@ -149,3 +149,12 @@ In the same component define your custom pagination in the markup:
 <Step number=5 title="Done!">
 Use your new component and that's it! You've successfully implemented customized pagination and footer in your GridCraft data table.
 </Step>
+
+
+
+
+
+
+Example for paging with page number buttons: 
+
+[![Open in SvelteLab](https://docs.sveltelab.dev/button/dark_short.svg)](https://sveltelab.dev/97vvmq174sei27p)
