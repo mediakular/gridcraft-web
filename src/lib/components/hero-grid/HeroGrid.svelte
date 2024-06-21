@@ -367,21 +367,21 @@
             </div>
             
             <div class="my-3 rounded-lg bg-white/30 p-6 w-full max-w-3xl">
-                <div id="segment-1" class="" role="tabpanel" aria-labelledby="segment-item-1">
+                <div id="segment-1" class="bg-white/50 dark:bg-slate-700 rounded" role="tabpanel" aria-labelledby="segment-item-1">
                     <GridFooter bind:paging {theme} />
                 </div>
                 <div id="segment-2" class="hidden" role="tabpanel" aria-labelledby="segment-item-2">
                     <div class="grid grid-rows-3 grid-flow-col gap-4">
                         <div class="col-span-2">
                             <div class="relative flex">
-                                <input type="text" placeholder="Enter Filter Term (Name, Email, etc.)" bind:value={textSearch} class="block w-full p-4 pl-14 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400" />
+                                <input type="text" placeholder="Enter Filter Term (Name, Email, etc.)" bind:value={textSearch} class="block w-full p-4 pl-14 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-700 dark:border-gray-700 dark:text-gray-400" />
                                 <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none pl-4">
-                                    <svelte:component this={SearchIcon} class="stroke-gray-700 dark:border-gray-300" />
+                                    <svelte:component this={SearchIcon} class="stroke-gray-700 dark:stroke-gray-500" />
                                 </div>
                             </div>
                         </div>
                         <div class="row-span-2 col-span-2">
-                            <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4">
+                            <div class="bg-white/50 dark:bg-slate-700 rounded-md p-4">
                                 <div class="flex justify-between text-xs text-gray-800 dark:text-gray-200">
                                     <label for="steps-range-slider-usage">Max. Progess</label> <span class="font-bold">{progressFilter}</span>
                                 </div>
@@ -439,7 +439,7 @@
                             </div>
                         </div>
                         <div class="row-span-3">
-                            <div class="flex flex-col bg-white/50 dark:bg-slate-900 rounded-md p-4">
+                            <div class="flex flex-col bg-white/50 dark:bg-slate-700 rounded-md p-4">
                                 <label for="hs-as-columns-dropdown-all-active" class="flex py-2.5 px-3 capitalize">
                                     <input type="checkbox" bind:checked={activeFilterActive} on:click={() => filters[1].active = !filters[1].active} class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800 disabled:opacity-40" id="hs-as-columns-dropdown-all-active">
                                     <span class="ml-2 py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
@@ -473,7 +473,7 @@
                 </div>
                 <div id="segment-3" class="hidden" role="tabpanel" aria-labelledby="segment-item-3">
                     <div class="max-w-sm space-y-3 mx-auto">
-                        <select id="groupBySelect" bind:value={groupBy} class="py-2 px-3 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400">
+                        <select id="groupBySelect" bind:value={groupBy} class="py-2 px-3 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-700 dark:border-gray-700 dark:text-gray-400">
                             <option value="" class="text-gray-100">Select Column to Group By</option>
                             {#each dataColumns.filter(x => x.visible != false && x.key != 'actions') as col (col.key)}
                                 <option value={col.key}>{col.title}</option>
@@ -486,13 +486,13 @@
                     
                         <div class="flex flex-col gap-2">
                             {#each dataColumns as col (col.key)}
-                                <label for="checkbox-{col.key}" class="bg-white/50 dark:bg-slate-900 hover:bg-white/60 hover:dark:bg-slate-900/90 cursor-pointer rounded-md px-4 py-2 {col.visible ? '' : 'opacity-60'}" title="{col.title}">
+                                <label for="checkbox-{col.key}" class="bg-white/50 dark:bg-slate-700 hover:bg-white/60 hover:dark:bg-slate-700/90 cursor-pointer rounded-md px-4 py-2 {col.visible ? '' : 'opacity-60'}" title="{col.title}">
                                     <input type="checkbox" value={col.key} checked={col.visible} on:change={() =>  col.visible = !col.visible } disabled={col.key == groupBy} class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" id="checkbox-{col.key}">
                                     <label for="checkbox-{col.key}" class="text-sm text-gray-800 ms-3 dark:text-gray-400">{col.title}{col.key == 'actions' ? 'Actions' : ''}</label>
                                 </label>
                             {/each}
                         </div>
-                        <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4">
+                        <div class="bg-white/50 dark:bg-slate-700 rounded-md p-4">
                             <div class="flex">
                                 <input type="checkbox" checked={showCheckboxes} on:change={() =>  { showCheckboxes = !showCheckboxes; selectedRows = [] } } class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" id="checkbox-showCheckboxes">
                                 <label for="checkbox-showCheckboxes" class="text-sm text-gray-800 ms-3 dark:text-gray-400">Show checkboxes</label>
@@ -502,15 +502,15 @@
                 </div>
                 <div id="segment-5" class="hidden" role="tabpanel" aria-labelledby="segment-item-5">
                     <div class="grid grid-rows-1 grid-cols-2 grid-flow-col gap-4">
-                        <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4 flex items-center">
-                            <div class="bg-gray-100 dark:bg-slate-700 rounded-md p-2"><DarkModeButton /></div>
+                        <div class="bg-white/50 dark:bg-slate-700 rounded-md p-4 flex items-center">
+                            <div class="bg-gray-100 dark:bg-slate-800 rounded-md p-2"><DarkModeButton /></div>
                             <span class="text-sm text-gray-800 ms-3 dark:text-gray-400"> Switch between light and dark mode</span>
                         </div>
 
-                        <div class="bg-white/50 dark:bg-slate-900 rounded-md p-4 flex flex-wrap items-center gap-4">
-                            <button class="inline-flex justify-center {theme === PlainTableCssTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => handleThemeChange(PlainTableCssTheme)}>Plain Css Theme</button>
-                            <button class="inline-flex justify-center {theme === PrelineTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => handleThemeChange(PrelineTheme)}>Preline Theme</button>
-                            <button class="inline-flex justify-center {theme === CardsPlusTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-700 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() =>handleThemeChange(CardsPlusTheme)}>CardsPlus Theme</button>
+                        <div class="bg-white/50 dark:bg-slate-700 rounded-md p-4 flex flex-wrap items-center gap-4">
+                            <button class="inline-flex justify-center {theme === PlainTableCssTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-800 '} items-center gap-x-3 text-center hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => handleThemeChange(PlainTableCssTheme)}>Plain Css Theme</button>
+                            <button class="inline-flex justify-center {theme === PrelineTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-800 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() => handleThemeChange(PrelineTheme)}>Preline Theme</button>
+                            <button class="inline-flex justify-center {theme === CardsPlusTheme ? 'bg-gradient-to-tl from-blue-600 to-violet-600' : 'bg-gray-800 '} items-center gap-x-3 text-center  hover:opacity-90 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-1 focus:ring-gray-600 py-3 px-4 dark:focus:ring-offset-gray-800" on:click={() =>handleThemeChange(CardsPlusTheme)}>CardsPlus Theme</button>
                         </div>
                     </div>
                 </div>
