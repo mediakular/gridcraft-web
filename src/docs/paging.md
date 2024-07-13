@@ -114,7 +114,7 @@ function handleItemsPerPageChange() {
 
 <Step number=2 title="Use Custom Paging Component">
 
-Import the Grid component from @mediakular/gridcraft:
+Use your custom paging component together with the grid: 
 
 ```svelte
 <script>
