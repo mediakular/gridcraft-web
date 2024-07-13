@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Grid, GridFooter, ThemeStore, type GridColumn, PrelineTheme, PagingStore, type PagingData } from "@mediakular/gridcraft"
+    import { Grid, GridFooter, type GridColumn, PrelineTheme, type PagingData } from "@mediakular/gridcraft"
     import clientsJson from '$lib/data/samples/clients.json';
 
     import ClientCell from "$lib/components/hero-grid/cells/ClientCell.svelte";
@@ -27,14 +27,12 @@
     export let itemsPerPageOptions = [10, 20, 50, 100];
     export let theme = PrelineTheme;
 
-    ThemeStore.set(theme);
+    let paging = {
+		itemsPerPage: itemsPerPage, //default 10
+		currentPage: 1, //default 1
+		itemsPerPageOptions: itemsPerPageOptions
+	} as PagingData;
 
-    $: PagingStore.set({
-            itemsPerPage: itemsPerPage,
-            currentPage: 1,
-            itemsPerPageOptions: itemsPerPageOptions
-        } as PagingData
-    );
 
     interface Client {
         id: string;
@@ -151,6 +149,8 @@
         {groupsExpandedDefault}
         {showCheckboxes}
         bind:selectedRows={selectedRows}
+        bind:paging
+        {theme}
     />
 </div>
 
@@ -162,5 +162,5 @@
 {/if}
 
 <div class:hidden={!showFooter} >
-    <GridFooter />
+    <GridFooter bind:paging {theme} />
 </div>
