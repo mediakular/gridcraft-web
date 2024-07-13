@@ -54,7 +54,7 @@ Include the `GridFooter` component one or multiple times and assign the paging p
 That's it! Now you have implemented simple pagination in your GridCraft data table.
 
 
-!> In case you only want to change the paging buttons you can change the theme for the `Paging` component, as the `GridFooter` uses the `Paging` component! Learn more about theming in the [theming section](/theming).
+!> In case you only want to change the paging buttons you can change the theme for the `Paging` component, as the `GridFooter` uses the `Paging` component! Learn more about theming in the [theming section](/docs/theming).
 </Step>
 
 <DocuGrid itemCount={50} columns=[firstname,lastname,age,status] showFooter={true} itemsPerPage={5} itemsPerPageOptions={[5,10]}></DocuGrid>
