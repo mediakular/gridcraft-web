@@ -21,7 +21,7 @@ To implement pagination using the predefined Footer Component in GridCraft, foll
 Import the `Grid` and GridFooter components from `@mediakular/gridcraft`:
    
 ```typescript
-import { Grid, GridFooter } from "@mediakular/gridcraft";
+import { Grid, GridFooter, type PagingData } from "@mediakular/gridcraft";
 ```
 </Step>
 
@@ -60,48 +60,20 @@ That's it! Now you have implemented simple pagination in your GridCraft data tab
 <DocuGrid itemCount={50} columns=[firstname,lastname,age,status] showFooter={true} itemsPerPage={5} itemsPerPageOptions={[5,10]}></DocuGrid>
 
 
-## Customized Pagination and Footer
+## Customized Pagination
 
-To implement customized pagination and footer in GridCraft, follow these steps:
+To implement customized pagination in GridCraft, follow these steps:
 
-<Step number=1 title="Import Grid Component">
 
-Import the Grid component from @mediakular/gridcraft:
+<Step number=1 title="Define Paging Component">
 
-```typescript
-import { Grid, type PagingData } from "@mediakular/gridcraft";
-```
-</Step>
-
-<Step number=2 title="Modify Paging Variables (Optional)">
-
-Optionally, modify the default paging variables such as `itemsPerPage`, `currentPage`, or `itemsPerPageOptions`.
-
-```typescript
-let paging = {
-    itemsPerPage: 20,
-    currentPage: 2,
-    itemsPerPageOptions: [10, 20, 50]
-} as PagingData;
-```
-</Step>
-
-<Step number=3 title="Define Paging Functions">
-
-Create a new component ´MyPaging.svelte´ and define the functions for navigating to the next and previous pages:
+Create a new component ´MyPaging.svelte´ and define the functions and markup for navigating to the next and previous pages:
 
 ```svelte
 <script>
 import { type PagingData } from "@mediakular/gridcraft";
 
-//defining default paging data
-export let paging: PagingData = {
-    currentPage: 1,
-    itemsPerPage: 10,
-    itemsPerPageOptions: [10, 25, 50, 100],
-    totalPages: 1,
-    totalResults: 0,
-} as PagingData; 
+export let paging: PagingData; 
 
 let itemsPerPage = 10;
 
@@ -117,14 +89,7 @@ function handleItemsPerPageChange() {
     paging.itemsPerPage = itemsPerPage;
 }
 </script>
-```
-</Step>
 
-<Step number=4 title="Implement Paging Markup">
-
-In the same component define your custom pagination in the markup:
-
-```svelte
 <div>
     <select bind:value={itemsPerPage} on:change={handleItemsPerPageChange}>
         {#each paging.itemsPerPageOptions as option (option)}
@@ -146,12 +111,41 @@ In the same component define your custom pagination in the markup:
 
 </Step>
 
-<Step number=5 title="Done!">
-Use your new component and that's it! You've successfully implemented customized pagination and footer in your GridCraft data table.
+
+<Step number=2 title="Use Custom Paging Component">
+
+Import the Grid component from @mediakular/gridcraft:
+
+```svelte
+<script>
+import { Grid, type PagingData } from "@mediakular/gridcraft";
+import MyPaging from "$lib/components/MyPaging.svelte";
+
+let data = [
+    // your data
+];
+
+let paging = {
+    itemsPerPage: 20,
+    currentPage: 2,
+    itemsPerPageOptions: [10, 20, 50]
+} as PagingData;
+
+</script>
+
+<MyPaging bind:paging />
+
+<Grid {data} {paging} />
+
+<MyPaging bind:paging />
+
+```
 </Step>
 
 
-
+<Step number=3 title="Done!">
+That's it! You've successfully implemented a customized pagination in your GridCraft data table.
+</Step>
 
 
 
