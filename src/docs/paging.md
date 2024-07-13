@@ -69,7 +69,7 @@ To implement customized pagination and footer in GridCraft, follow these steps:
 Import the Grid component from @mediakular/gridcraft:
 
 ```typescript
-import { Grid } from "@mediakular/gridcraft";
+import { Grid, type PagingData } from "@mediakular/gridcraft";
 ```
 </Step>
 
