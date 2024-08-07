@@ -2,22 +2,26 @@
 	import { browser } from "$app/environment";
 	import { getCookie, setCookie } from "$lib/helpers/cookie-helper";
 	import { onMount } from "svelte";
+  import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
 	function handleAccept(accept:boolean): any {
-        if (browser) {
-            setCookie("cookie_consent", accept ? "true" : "false", 365);
-            showCookieNote = false;
-        }
+    if (browser) {
+      setCookie("cookie_consent", accept ? "true" : "false", 365);
+      showCookieNote = false;
+      dispatch('acceptClicked');
+    }
 	}
 
   $: showCookieNote = false;
   onMount(() => {
-      if (browser) {
-          const cookieConsent = getCookie("cookie_consent");
-          if (cookieConsent !== "true") {
-              showCookieNote = true;
-          }
+    if (browser) {
+      const cookieConsent = getCookie("cookie_consent");
+      if (cookieConsent !== "true") {
+          showCookieNote = true;
       }
+    }
   })
 </script>
 
