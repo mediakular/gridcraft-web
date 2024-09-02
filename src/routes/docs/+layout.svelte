@@ -1,17 +1,15 @@
-<script>
+<script lang="ts">
 	import { afterUpdate } from "svelte";
     import { browser } from "$app/environment";
     import ClipboardJS from 'clipboard';
     import Header from "$lib/components/Header.svelte";
 
     function updateTOC() {
-        if (browser) {
-            var fragment = document.createDocumentFragment();
-            const tableOfContents = document.getElementsByClassName('toc');
-            if (tableOfContents.length > 0) {
-                fragment.appendChild(tableOfContents[0]);
-                document.getElementById('toc')?.appendChild(fragment);
-            }
+        var fragment = document.createDocumentFragment();
+        const tableOfContents = document.getElementsByClassName('toc');
+        if (tableOfContents.length > 0) {
+            fragment.appendChild(tableOfContents[0]);
+            document.getElementById('toc')?.appendChild(fragment);
         }
     }
 
@@ -64,16 +62,16 @@
             // Get the current scroll position
             const scrollPosition = window.scrollY;
             
-            headings.forEach(heading => {
+            headings.forEach((heading) => {
                 // Get the top position of the heading
-                const headingTop = heading.offsetTop;
+                const headingTop = (heading as HTMLElement).offsetTop;
                 
                 // Check if the scroll position is within the heading
                 if (scrollPosition + 20 >= headingTop) {
                     // Add 'active' class to the corresponding navigation link
                     const navLinks = document.querySelectorAll('nav.toc a');
                     navLinks.forEach(link => {
-                        if (link.getAttribute('href').substring(1) === heading.id) {
+                        if (link.getAttribute('href')?.substring(1) === heading.id) {
                             link.classList.add('active');
                         } else {
                             link.classList.remove('active');
@@ -93,5 +91,5 @@
     })
 </script>
 
-<Header isDocs="true"/>
+<Header isDocs={true}/>
 <slot />

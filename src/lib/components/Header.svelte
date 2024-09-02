@@ -1,5 +1,6 @@
-<script>
-	import DarkModeButton from "./DarkModeButton.svelte";
+<script lang="ts">
+	import DarkModeButton from "$lib/components/DarkModeButton.svelte";
+
   export let isDocs = false;
 </script>
 

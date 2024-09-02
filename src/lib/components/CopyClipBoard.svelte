@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	
-	export let name;
+	export let name: string;
 
-	let textarea;
+	let textarea: HTMLTextAreaElement;
 	
 	onMount(() => {
 		textarea.select();

@@ -70,7 +70,7 @@
             
             $clickableThemes.forEach($item => {
                 $item.addEventListener('click', () => {
-                    HSThemeAppearance.setAppearance($item.getAttribute('data-hs-theme-click-value')); 
+                    HSThemeAppearance.setAppearance($item.getAttribute('data-hs-theme-click-value') ?? 'default'); 
                 }, true, $item)
             })
         })

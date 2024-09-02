@@ -51,32 +51,43 @@
     @apply after:content-["#"] after:mr-2 
 }
 
+.prose h2,
+.prose h3,
+.prose h4  {
+    @apply before:table before:relative before:content-[""] before:h-[150px] before:mt-[-150px] before:lg:h-[100px] before:lg:mt-[-100px] before:invisible before:cursor-pointer before:pointer-events-none
+}
+
 .prose h2 a,
 .prose h3 a,
 .prose h4 a  {
-    @apply no-underline before:content-["#"] before:table before:h-[130px] before:mt-[-130px] md:before:h-[140px] md:before:mt-[-140px] lg:before:h-[100px] lg:before:mt-[-100px] before:invisible
+    @apply no-underline
 }
 
 #toc a.toc-link {
-    @apply no-underline border-l-4 border-transparent ps-4 transition-all block dark:text-gray-200
+    @apply no-underline border-l-[3px] border-transparent md:ps-4 transition-all block dark:text-gray-200 text-[0.90rem]
 }
 
 #toc a.toc-link.active {
-    @apply text-blue-600 border-l-4 border-blue-500 ps-4 block dark:text-blue-400 dark:border-blue-400
+    @apply text-blue-600 border-l-[3px] border-blue-500 md:ps-4 block dark:text-blue-400 dark:border-blue-400
 }
 
 #toc {
-    @apply px-10 md:px-0
+    @apply border p-4 md:p-0 rounded-md md:rounded-none border-gray-200/20 md:border-l md:border-r-0 md:border-t-0 md:border-b-0 md:border-white/20
+}
+
+#toc .toc {
+    @apply md:ml-[-2px]
 }
 
 #toc ol {
-    @apply md:pl-0
+    @apply md:pl-0 mt-0
 }
 
 #toc ol li {
-    @apply list-decimal md:list-none
+    @apply list-decimal md:list-none px-0
 }
 
-#toc ol ol li {
-    @apply pl-8
+#toc ol ol li a.toc-link,
+#toc ol ol li a.toc-link.active {
+    @apply md:ps-10
 }
