@@ -171,8 +171,11 @@
 
     $: dataColumns = (theme === CardsPlusTheme ? cardColumns : columns);
 
-    let textSearch = "";    
-    let filters: GridFilter[];
+    let progressFilter = 10;
+    let progressOperator = "lte";
+
+    let textSearch = ""; 
+    let filters: GridFilter[];   
     $: filters = [
         {   
             key: "text-search", 
@@ -190,9 +193,9 @@
             }, 
             active: (textSearch && textSearch.length > 0) ? true : false 
         },
-        { key: "status-active", columns: "status", filter: (val: any) => { return val != "active" }, active: false },
-        { key: "status-inactive", columns: "status", filter: (val: any) => { return val != "inactive" }, active: false },
-        { key: "status-pending", columns: "status", filter: (val: any) => { return val != "pending" }, active: false },
+        { key: "status-active", columns: "status", filter: (val: any) => { return val != "active" }, active: !activeFilterActive },
+        { key: "status-inactive", columns: "status", filter: (val: any) => { return val != "inactive" }, active: !inactiveFilterActive },
+        { key: "status-pending", columns: "status", filter: (val: any) => { return val != "pending" }, active: !pendingFilterActive },
         {   
             key: "progress", 
             columns: "progress", 
@@ -209,12 +212,9 @@
         },
     ];
 
-    $: activeFilterActive = !filters[1].active;
-    $: inactiveFilterActive = !filters[2].active;
-    $: pendingFilterActive = !filters[3].active;
-
-    let progressFilter = 10;
-    let progressOperator = "lte";
+    let activeFilterActive = true;
+    let inactiveFilterActive = true;
+    let pendingFilterActive = true;
 
     function handleThemeChange(setTheme: GridTheme) {
         if (setTheme == PrelineTheme) {
@@ -232,8 +232,6 @@
         } as PagingData;
     }
 </script>
-
-
 
 <div class="flex flex-col items-center rounded-t-full relative mt-[2rem]">
     <div class="after:bg-radient-ellipse-c after:from-blue-600 after:dark:from-blue-600 after:from-0% after:to-transparent after:to-70% after:z-[-1] after:absolute after:top-[-10rem] after:left-0 after:w-full after:h-full after:animate-pulse after:duration-[6000ms] opacity-80"></div>
@@ -254,7 +252,6 @@
             </button>
         </div>
     </div>
-    
 
     <div class="relative z-20 max-w-full lg:w-[65rem] p-4 drop-shadow-xl rounded-lg overflow-clip  ">
         <div class="rounded-lg drop-shadow-lg">
@@ -265,7 +262,7 @@
                 bind:groupBy
                 bind:showCheckboxes
                 bind:filters
-                {paging}
+                bind:paging
                 {theme}
             />
         </div>
