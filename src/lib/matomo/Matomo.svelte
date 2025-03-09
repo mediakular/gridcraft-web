@@ -13,15 +13,28 @@
     import { page } from "$app/stores"
     import { tracker } from "$lib/matomo/tracker"
   
-    export let url: string = env.PUBLIC_MATOMO_URL
-    export let siteId: number = +env.PUBLIC_MATOMO_SITE_ID
-    export let disableCookies = false
-    export let requireConsent = false
-    export let doNotTrack = false
-    export let debug = false
-    export let heartBeat: number | null = 15
   
-    export let linkTracking: boolean | null = null
+  interface Props {
+    url?: string;
+    siteId?: number;
+    disableCookies?: boolean;
+    requireConsent?: boolean;
+    doNotTrack?: boolean;
+    debug?: boolean;
+    heartBeat?: number | null;
+    linkTracking?: boolean | null;
+  }
+
+  let {
+    url = env.PUBLIC_MATOMO_URL,
+    siteId = +env.PUBLIC_MATOMO_SITE_ID,
+    disableCookies = false,
+    requireConsent = false,
+    doNotTrack = false,
+    debug = false,
+    heartBeat = 15,
+    linkTracking = null
+  }: Props = $props();
   
     async function initializeMatomo() {
         

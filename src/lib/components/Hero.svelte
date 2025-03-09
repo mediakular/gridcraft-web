@@ -1,5 +1,6 @@
 <script lang="ts">
 	import CopyClipBoard from '$lib/components/CopyClipBoard.svelte';
+import { mount, unmount } from "svelte";
 
 	interface PackageManager {
 		title: string;
@@ -25,16 +26,16 @@
 		}
 	];
 
-	let packageManager: PackageManager = packageManagers[0];
+	let packageManager: PackageManager = $state(packageManagers[0]);
 
-	let showCopied = false;
+	let showCopied = $state(false);
 
 	const copyClipboard = () => {
-		const app = new CopyClipBoard({
-			target: document.getElementById('clipboard'),
-			props: { name: packageManager.install }
-		});
-		app.$destroy();
+		const app = mount(CopyClipBoard, {
+        			target: document.getElementById('clipboard'),
+        			props: { name: packageManager.install }
+        		});
+		unmount(app);
 
 		showCopied = true;
 		setTimeout(() => {
@@ -97,7 +98,7 @@
 				<button
 					type="button"
 					class="relative group p-2 ps-3 inline-flex items-center gap-x-2 text-sm font-mono rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-					on:click={copyClipboard}
+					onclick={copyClipboard}
 				>
 					$ {packageManager.install}
 					<span
@@ -136,7 +137,7 @@
 				<button
 					class:font-bold={pm === packageManager}
 					class="text-sm text-gray-900 dark:text-white"
-					on:click={() => (packageManager = pm)}>{pm.title}</button
+					onclick={() => (packageManager = pm)}>{pm.title}</button
 				>
 			{/each}
 

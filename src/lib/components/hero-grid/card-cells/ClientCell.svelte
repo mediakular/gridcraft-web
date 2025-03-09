@@ -1,12 +1,22 @@
 <script lang="ts">
-    export let avatar: string;
-    export let firstname: string;
-    export let lastname: string;
-    export let email: string;
 
-    export let isGroupByHeader = false;
+    interface Props {
+        avatar: string;
+        firstname: string;
+        lastname: string;
+        email: string;
+        isGroupByHeader?: boolean;
+    }
 
-    $: fullname = `${firstname} ${lastname}`;
+    let {
+        avatar,
+        firstname,
+        lastname,
+        email,
+        isGroupByHeader = false
+    }: Props = $props();
+
+    let fullname = $derived(`${firstname} ${lastname}`);
 </script>
 
 <div class="flex {isGroupByHeader ? 'gap-x-4 mr-3' : 'flex-col col-span-2 gap-y-5 max-w-[200px]'} items-start">

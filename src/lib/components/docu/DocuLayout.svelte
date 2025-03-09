@@ -2,12 +2,23 @@
   import type { DocuCategory } from "$lib/types";
   import { page } from '$app/stores';
 
-  export let category = "";
-  export let title = "";
-  export let description = "";
-  export let categories:DocuCategory[] = [];
+  interface Props {
+    category?: string;
+    title?: string;
+    description?: string;
+    categories?: DocuCategory[];
+    children?: import('svelte').Snippet;
+  }
 
-	$: currentPath = $page.url.pathname;
+  let {
+    category = "",
+    title = "",
+    description = "",
+    categories = [],
+    children
+  }: Props = $props();
+
+	let currentPath = $derived($page.url.pathname);
 </script>
 
 <!-- Sidebar Toggle -->
@@ -78,7 +89,7 @@
         </hgroup>
         <hr class="mt-8 mb-10 max-w-[65ch]" />
         <div class="prose lg:prose-lg dark:prose-invert prose-img:rounded-xl prose-a:text-blue-600 hover:prose-a:text-violet-500">
-          <slot />
+          {@render children?.()}
         </div>
       </div>
       <!-- End Content -->

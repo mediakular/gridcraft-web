@@ -1,7 +1,11 @@
 <script lang="ts">
 	import DarkModeButton from "$lib/components/DarkModeButton.svelte";
 
-  export let isDocs = false;
+  interface Props {
+    isDocs?: boolean;
+  }
+
+  let { isDocs = false }: Props = $props();
 </script>
 
 <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full backdrop-blur-sm bg-white/80 border-b border-gray-200 text-sm py-3 sm:py-0 dark:bg-slate-900/80 dark:border-slate-700 fixed top-0 z-[999]">

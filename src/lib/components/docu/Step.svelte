@@ -1,3 +1,5 @@
+<!-- @migration-task Error while migrating Svelte code: Declaring or accessing a prop starting with `$$` is illegal (they are reserved for Svelte internals)
+https://svelte.dev/e/props_illegal_name -->
 <script lang="ts">
     export let number = 1;
     export let title = "";

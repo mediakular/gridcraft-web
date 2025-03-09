@@ -1,6 +1,10 @@
 <script lang="ts">
-    export let value: string;
-    export let isGroupByHeader = false;
+    interface Props {
+        value: string;
+        isGroupByHeader?: boolean;
+    }
+
+    let { value, isGroupByHeader = false }: Props = $props();
 </script>
 
 <div class="{!isGroupByHeader ? 'absolute top-[4.5rem] md:top-[7rem] right-3' : ''}">

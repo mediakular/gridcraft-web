@@ -1,10 +1,19 @@
 <script lang="ts">
-    export let avatar: string;
-    export let firstname: string;
-    export let lastname: string;
-    export let email: string;
+    interface Props {
+        avatar: string;
+        firstname: string;
+        lastname: string;
+        email: string;
+    }
 
-    $: fullname = `${firstname} ${lastname}`;
+    let {
+        avatar,
+        firstname,
+        lastname,
+        email
+    }: Props = $props();
+
+    let fullname = $derived(`${firstname} ${lastname}`);
 </script>
 
 <div class="flex items-center gap-x-3 max-w-[200px]">
