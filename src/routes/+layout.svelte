@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import "../app.css"; 
     import { afterNavigate } from "$app/navigation";
     import CookieNote from "$lib/components/CookieNote.svelte";
@@ -7,8 +7,13 @@
 	import { onMount } from "svelte";
 	import { dev } from "$app/environment";
 	import { tracker } from "$lib/matomo/tracker";
+    interface Props {
+        children?: import('svelte').Snippet;
+    }
 
-    let requireConsent = true;
+    let { children }: Props = $props();
+
+    let requireConsent = $state(true);
 
     afterNavigate(() => {
         window?.HSStaticMethods && window.HSStaticMethods.autoInit();
@@ -25,4 +30,4 @@
     <Matomo url={"https://analytics.mediakular.com"} siteId={10} doNotTrack={true} {requireConsent} />
 {/if}
 
-<slot />
+{@render children?.()}

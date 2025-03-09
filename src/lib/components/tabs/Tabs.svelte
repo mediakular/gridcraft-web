@@ -1,12 +1,23 @@
 <script lang="ts">
-    export let cssClasses = "";
-    export let cssClassesContent = "mt-3 p-4";
+    interface Props {
+        cssClasses?: string;
+        cssClassesContent?: string;
+        header?: import('svelte').Snippet;
+        content?: import('svelte').Snippet;
+    }
+
+    let {
+        cssClasses = "",
+        cssClassesContent = "mt-3 p-4",
+        header,
+        content
+    }: Props = $props();
 </script>
 <div class="dark:border-gray-700 {cssClasses}">
     <nav class="flex space-x-2" aria-label="Tabs" role="tablist">
-        <slot name="header"></slot>
+        {@render header?.()}
     </nav>
     <div class={cssClassesContent}>
-        <slot name="content"></slot>
+        {@render content?.()}
     </div>
 </div>

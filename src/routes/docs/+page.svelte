@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	import DocuLayout from "$lib/components/docu/DocuLayout.svelte";
     
-	export let data;
+	let { data } = $props();
 </script>
 
 <svelte:head>
@@ -23,6 +23,6 @@
 </svelte:head>
 
 <DocuLayout title={data.meta.title} description={data.meta.description} category={data.meta.category} categories={data.categories}>
-	<svelte:component this={data.content} />
+	<data.content />
 </DocuLayout>
 

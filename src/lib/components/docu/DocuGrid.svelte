@@ -9,29 +9,46 @@
     import EditActionsCell from "$lib/components/hero-grid/cells/EditActionsCell.svelte";
     import ProgressCell from "$lib/components/hero-grid/cells/ProgressCell.svelte";
     
-    export let showFooter = false;
 
-    export let itemCount = 10;
-    export let itemsPerPage = 10;
 
-    export let groupby = "";
-    export let columns:string[] = [];
-    export let groupsExpandedDefault = true;
 
-    export let showCheckboxes = false;
-    export let selectedRows:Client[] = [];
 
-    export let showCheckedDebug = false;
-    export let showColumnsShowHide = false;
 
-    export let itemsPerPageOptions = [10, 20, 50, 100];
-    export let theme = PrelineTheme;
+    interface Props {
+        showFooter?: boolean;
+        itemCount?: number;
+        itemsPerPage?: number;
+        groupby?: string;
+        columns?: string[];
+        groupsExpandedDefault?: boolean;
+        showCheckboxes?: boolean;
+        selectedRows?: Client[];
+        showCheckedDebug?: boolean;
+        showColumnsShowHide?: boolean;
+        itemsPerPageOptions?: any;
+        theme?: any;
+    }
 
-    let paging = {
+    let {
+        showFooter = false,
+        itemCount = 10,
+        itemsPerPage = 10,
+        groupby = "",
+        columns = [],
+        groupsExpandedDefault = true,
+        showCheckboxes = false,
+        selectedRows = $bindable([]),
+        showCheckedDebug = false,
+        showColumnsShowHide = false,
+        itemsPerPageOptions = [10, 20, 50, 100],
+        theme = PrelineTheme
+    }: Props = $props();
+
+    let paging = $state({
 		itemsPerPage: itemsPerPage, //default 10
 		currentPage: 1, //default 1
 		itemsPerPageOptions: itemsPerPageOptions
-	} as PagingData;
+	} as PagingData);
 
 
     interface Client {
@@ -48,7 +65,7 @@
         quantity: number;
     }
     
-    let cols: GridColumn<Client>[] = [
+    let cols: GridColumn<Client>[] = $state([
         { 
             key: 'name', 
             title: 'Name',
@@ -111,7 +128,7 @@
             renderComponent: EditActionsCell,
             visible: columns.includes("actions")
         }
-    ];
+    ]);
 
     let clients = clientsJson.slice(0, itemCount) as Client[];
 
@@ -130,7 +147,7 @@
             {#each cols as col (col.key)}
                 <div class="relative flex items-start py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
                     <div class="flex items-center h-5 mt-1">
-                        <input id="checkbox-{col.key}" type="checkbox" value={col.key} checked={col.visible} on:change={() =>  col.visible = !col.visible } disabled={col.key == groupby} class="shrink-0 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
+                        <input id="checkbox-{col.key}" type="checkbox" value={col.key} checked={col.visible} onchange={() =>  col.visible = !col.visible} disabled={col.key == groupby} class="shrink-0 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800">
                     </div>
                     <label for="checkbox-{col.key}" class="ms-3.5">
                         <span class="mt-1 block text-sm font-semibold text-gray-800 dark:text-gray-300">{col.title}</span>

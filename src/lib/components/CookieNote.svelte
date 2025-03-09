@@ -14,7 +14,8 @@
     }
 	}
 
-  $: showCookieNote = false;
+  let showCookieNote = $state(false);
+  
   onMount(() => {
     if (browser) {
       const cookieConsent = getCookie("cookie_consent");
@@ -36,12 +37,12 @@
         </div>
         <div class="inline-flex gap-x-2">
           <div>
-            <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"  on:click={() => handleAccept(false)}>
+            <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"  onclick={() => handleAccept(false)}>
               Reject
             </button>
           </div>
           <div>
-            <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-mdkl-green-500 text-white hover:bg-mdkl-green-300 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" on:click={() => handleAccept(true)}>
+            <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-mdkl-green-500 text-white hover:bg-mdkl-green-300 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" onclick={() => handleAccept(true)}>
               Accept
             </button>
           </div>

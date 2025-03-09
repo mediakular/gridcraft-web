@@ -46,7 +46,7 @@
             <div class="space-y-4 lg:space-y-6">
                 {#each features.slice(0, 3) as feature}
                     <div class="flex bg-white/90 rounded-md p-6">
-                        <svelte:component this={feature.icon} size="32" class="stroke-violet-600" />
+                        <feature.icon size="32" class="stroke-violet-600" />
                         <div class="ms-5 sm:ms-8">
                             <h3 class="text-base sm:text-lg font-semibold  bg-clip-text bg-gradient-to-tl from-blue-600 to-violet-600 text-transparent">
                                 {feature.title}
@@ -61,7 +61,7 @@
             <div class="space-y-4 lg:space-y-6">
                 {#each features.slice(3, 6) as feature}
                     <div class="flex bg-white/90 rounded-md p-6">
-                        <svelte:component this={feature.icon} size="32" class="stroke-violet-600" />
+                        <feature.icon size="32" class="stroke-violet-600" />
                         <div class="ms-5 sm:ms-8">
                             <h3 class="text-base sm:text-lg font-semibold  bg-clip-text bg-gradient-to-tl from-blue-600 to-violet-600 text-transparent">
                                 {feature.title}

@@ -1,5 +1,9 @@
 <script lang="ts">
-    export let value: number | undefined;
+    interface Props {
+        value: number | undefined;
+    }
+
+    let { value = $bindable() }: Props = $props();
     value = value ? value : 0;
 
     const percent = value * 10;

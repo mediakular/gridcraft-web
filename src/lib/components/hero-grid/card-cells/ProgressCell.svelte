@@ -1,6 +1,10 @@
 <script lang="ts">
-    export let value: number | undefined;
-    export let isGroupByHeader = false;
+    interface Props {
+        value: number | undefined;
+        isGroupByHeader?: boolean;
+    }
+
+    let { value = $bindable(), isGroupByHeader = false }: Props = $props();
     value = value ? value : 0;
 
     const percent = value * 10;
