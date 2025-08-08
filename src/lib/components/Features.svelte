@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Filter, Grid, Group, PaintBucket, RefreshCw, SortDesc } from "lucide-svelte";
 
-
     const features = [
         {
             "icon": Grid,

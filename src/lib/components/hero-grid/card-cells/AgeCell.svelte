@@ -1,9 +1,7 @@
 <script lang="ts">
-  interface Props {
-    value: number;
-  }
+	import type { GridColumnComponentProps } from "@mediakular/gridcraft";
 
-  let { value }: Props = $props();
+  let { value }: GridColumnComponentProps = $props();
 </script>
 
 <div class="block text-sm text-gray-800 dark:text-gray-300">

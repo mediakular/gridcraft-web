@@ -1,10 +1,5 @@
-<!-- @migration-task Error while migrating Svelte code: Declaring or accessing a prop starting with `$$` is illegal (they are reserved for Svelte internals)
-https://svelte.dev/e/props_illegal_name -->
 <script lang="ts">
-    export let number = 1;
-    export let title = "";
-
-    const SLOTS = $$props.$$slots;
+    let { children, number = 1, title = ""  } = $props();
 </script>
 
 <div class="flex mb-4 group doc-step max-w-full">
@@ -19,9 +14,9 @@ https://svelte.dev/e/props_illegal_name -->
             </div>
         {/if}
 
-        {#if SLOTS}
+        {#if children}
             <div class="relative">
-                <slot />
+                {@render children()}
                 <div class="absolute left-[-1.90rem] {title ? 'top-0 h-full' : 'top-[40px] h-[calc(100%-40px)]'} border-r border-slate-100 group-hover:border-slate-200 transition-colors w-1">&nbsp;</div>
             </div>
         {/if}
