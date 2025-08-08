@@ -1,9 +1,12 @@
 <!-- @migration-task Error while migrating Svelte code: Can't migrate code with afterUpdate. Please migrate by hand. -->
+<!-- @migration-task Error while migrating Svelte code: Can't migrate code with afterUpdate. Please migrate by hand. -->
 <script lang="ts">
-	import { afterUpdate } from "svelte";
     import { browser } from "$app/environment";
     import ClipboardJS from 'clipboard';
     import Header from "$lib/components/Header.svelte";
+    import type { Snippet } from "svelte"
+
+    const { children }: { children?: Snippet<[]> | undefined } = $props();
 
     function updateTOC() {
         var fragment = document.createDocumentFragment();
@@ -36,7 +39,7 @@
             codeBlock.appendChild(button);
         });
 
-        var clipboard = new ClipboardJS('.copy-code-button');
+        let clipboard = new ClipboardJS('.copy-code-button');
 
         clipboard.on('success', function(e) {
             e.trigger.textContent = 'Copied!';
@@ -83,14 +86,14 @@
         });
     }
 
-    afterUpdate(() => {
+    $effect(() => {
         if (browser) {
             updateTOC();
             initScrollSpy();
             modifyCodeBlocks();
         }
-    })
+    });
 </script>
 
 <Header isDocs={true}/>
-<slot />
+{@render children?.()}

@@ -1,12 +1,5 @@
 <script lang="ts">
-
-    interface Props {
-        avatar: string;
-        firstname: string;
-        lastname: string;
-        email: string;
-        isGroupByHeader?: boolean;
-    }
+	import type { GridColumnComponentProps } from "@mediakular/gridcraft";
 
     let {
         avatar,
@@ -14,7 +7,7 @@
         lastname,
         email,
         isGroupByHeader = false
-    }: Props = $props();
+    }: GridColumnComponentProps = $props();
 
     let fullname = $derived(`${firstname} ${lastname}`);
 </script>

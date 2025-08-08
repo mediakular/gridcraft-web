@@ -1,9 +1,7 @@
 <script lang="ts">
-    interface Props {
-        value: number | undefined;
-    }
+	import type { GridColumnComponentProps } from "@mediakular/gridcraft";
 
-    let { value = $bindable() }: Props = $props();
+    let { value = $bindable() }: GridColumnComponentProps = $props();
     value = value ? value : 0;
 
     const percent = value * 10;

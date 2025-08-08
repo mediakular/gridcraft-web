@@ -1,13 +1,8 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
+	import type { GridColumnComponentProps } from '@mediakular/gridcraft';
 
-	interface Props {
-		value: number;
-	}
-
-	let { value }: Props = $props();
-	let currency: string = $state();
-
+	let { value }: GridColumnComponentProps = $props();
+	let currency: string = $state('');
 
 	async function updateValue() {
 		const formatCurrency = (value: number, locale: string, currency: string, maximumFractionDigits?: number, minimumFractionDigits?: number) => new Intl.NumberFormat(locale, {
@@ -19,8 +14,9 @@
 
 		currency = formatCurrency(value ? value : 0, "en-US", "USD", 2);
 	}
-	run(() => {
-		value, updateValue()
+
+	$effect(() => {
+		updateValue()
 	});
 </script>
 

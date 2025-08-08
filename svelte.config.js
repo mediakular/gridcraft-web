@@ -6,7 +6,7 @@ import rehypeSlug from 'rehype-slug'
 import remarkHint from 'remark-hint'
 import remarkCodeTitle from 'remark-code-title'
 import { mdsvex, escapeSvelte } from 'mdsvex'
-import { getHighlighter } from 'shiki'
+import { getSingletonHighlighter } from 'shiki'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 
 /** @type {import('mdsvex').MdsvexOptions} */
@@ -17,7 +17,7 @@ const mdsvexOptions = {
 	highlight: {
 		highlighter: async (code, lang = 'text') => {
 			const theme = "dark-plus";
-			const highlighter = await getHighlighter({
+			const highlighter = await getSingletonHighlighter({
 				themes: [theme],
 				langs: ['javascript', 'typescript', 'svelte', 'bash', 'css']
 			})

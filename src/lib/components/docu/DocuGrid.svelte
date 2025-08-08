@@ -158,7 +158,7 @@
     </div>
 {/if}
 
-<div class="not-prose overflow-x-scroll border-x border-b border-gray-200 dark:border-gray-700 rounded-md">
+<div class="not-prose overflow-x-auto border-x border-b border-gray-200 dark:border-gray-700 rounded-md">
     <Grid 
         data={clients} 
         columns={cols} 

@@ -1,10 +1,7 @@
 <script lang="ts">
-    interface Props {
-        value: string;
-        isGroupByHeader?: boolean;
-    }
+	import type { GridColumnComponentProps } from "@mediakular/gridcraft";
 
-    let { value, isGroupByHeader = false }: Props = $props();
+    let { value, isGroupByHeader = false }: GridColumnComponentProps = $props();
 </script>
 
 <div class="{!isGroupByHeader ? 'absolute top-[4.5rem] md:top-[7rem] right-3' : ''}">
