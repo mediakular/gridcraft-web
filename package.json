@@ -40,11 +40,6 @@
 		"vite": "^7.1.0"
 	},
 	"type": "module",
-	"pnpm": {
-		"overrides": {
-			"@mediakular/gridcraft": "link:../../../../Library/pnpm/global/5/node_modules/@mediakular/gridcraft"
-		}
-	},
 	"dependencies": {
 		"@mediakular/gridcraft": "1.0.5-beta"
 	}
